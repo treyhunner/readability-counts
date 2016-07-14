@@ -35,9 +35,578 @@
           </aside>
         </section>
 
-        <section>Slide 1</section>
+        <section>
+          <p><blockquote cite="https://en.wikipedia.org/w/index.php?title=Readability&oldid=727348214">“Readability is the ease with which a reader can understand a written text.” &mdash;<a href="https://en.wikipedia.org/w/index.php?title=Readability&oldid=727348214">Wikipedia</a></blockquote></p>
+          <aside class="notes" data-markdown>
+            TODO
+            - first let's define readability
+          </aside>
+        </section>
 
-        <section>Slide 2</section>
+        <section>
+          <h2>Why does readability matter?</h2>
+          <ul>
+            <li>Readability is about making our lives easier.</li>
+            <li>Code is read more often than it is written.</li>
+            <li>Better readability means easier maintainability.</li>
+          </ul>
+          <aside class="notes" data-markdown>
+            TODO
+            - care for readability is based on the assumption that it should be easy to read code
+            - it should be easy to read code because code is read more often than it's written
+            - every time you fix a bug, change behavior, or add a feature: you probably need to read some code
+            - code usually doesn't completely stagnate immediately after it's written... it tends to change, even if only temporarily
+            - readability is a prerequisite for maintainability. You cannot maintain code without reading it.
+          </aside>
+        </section>
+
+        <section>
+          <h2>We're not discussing</h2>
+          <ul>
+            <li>Performance</li>
+            <li>Writability</li>
+          </ul>
+          <aside class="notes" data-markdown>
+            - We're talking about ease of readability for humans, not computers.
+            - During this talk, assume that source code is made primarily for human consumption.
+          </aside>
+        </section>
+
+        <section>
+          <h2>Structuring Lines of Text</h2>
+          <ul>
+            <li><strong>Line length</strong>: number of characters in one line of text</li>
+            <li class="fragment"><strong>Text width</strong>: line length without leading spaces</li>
+          </ul>
+          <aside class="notes" data-markdown>
+            - Let's talk about the structure of our code first
+            - at this point in history, screens are wide enough to fit lots of text
+            - line length is not a technical limitation, it's a human limitation
+            - we impose a line length on ourselves for readability because long lines are difficult to read
+
+            - Line length is a flawed metric "Line length" values indentation the same as the rest of our text
+            - Instead of line length, let's talk about text width.  Text width ignores indentation
+            - An 80 character line with a 20 spaces of indentation has a text width of 60
+          </aside>
+        </section>
+
+        <section>
+          <h2>Optimal Text Width</h2>
+          <ul>
+            <li>The bullet points on these slides automatically wrap text around 50 to 60 characters</li>
+            <li>Comfortable line lengths for English prose seem to fall somewhere between 40 and 80 characters</li>
+            <li class="fragment">Try using a <strong>maximum text width of 60 characters</strong></li>
+          </ul>
+          <aside class="notes" data-markdown>
+            - Let's talk about the optimal text width.
+            - English prose wrapped at 60 characters usually seems to be a fairly readable
+            - Source code can be a lot more dense than English though
+            - There's also a lot more structure and punctuation in source code than there is in English
+            - I don't know what a good average text width is for code, but 60 characters seems to be a good maximum
+            - I'm proposing that we attempt to stick to a maximum text width of 60 characters
+          </aside>
+        </section>
+
+        <section>
+          <h2>Text Structure</h2>
+          <ul>
+            <li><strong>Text length</strong>: number of consecutive non-empty lines</li>
+            <li>Let's assume a maximum indentation of 24 spaces</li>
+            <li>60 text width + 24 indentation = 84 line length</li>
+            <li>90 character line length should be plenty</li>
+          </ul>
+          <aside class="notes" data-markdown>
+            - Unfortunately our linting tools talk about line length and not text width so we need to translate our recommendations into line length
+
+            - 24 spaces is 6 levels of indentation
+            - That's the largest indentation I've found in my own Django apps
+
+            - If we're trying to ensure a maximum text width of 60 and a maximum length of 90 should be plenty if we're keeping our indentation under 6 levels deep
+          </aside>
+        </section>
+
+        <section data-transition="slide-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+employee_hours = (schedule.earliest_hour for employee in
+                  self.public_employees for schedule in
+                  employee.schedules)
+return min(h for h in employee_hours if h is not None)
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - this code has a text width under 60
+            - as you read this code, you're trying to figure out what it does
+            - you won't figure out what it does until you discover the structure of the code
+            - you'll eventually notice that the first statement includes a <strong>generator expression with 2 loops</strong> and the second statement includes a <strong>generation expressions with a single loop and a conditional statement</strong>
+            - this code is hard to read because the line breaks are inserted arbitrarily
+            - the author only wrapped their lines when they were near the maximum text width
+          </aside>
+        </section>
+
+        <section data-transition="fade-in slide-out">
+          <p>
+          <pre class="python"><code data-trim>
+employee_hours = (
+    schedule.earliest_hour
+    for employee in self.public_employees
+    for schedule in employee.schedules
+)
+return min(
+    hour
+    for hour in employee_hours
+    if hour is not None
+)
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - is this code more readable?
+            - this is the same code as before, but the line breaks have moved around
+            - this time, the line breaks split up the code into logical parts
+            - these line breaks were inserted with the purpose of readability
+
+            - let's look at another example
+          </asid>
+        </section>
+
+        <section data-transition="slide-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+def is_valid_uuid(uuid):
+    """Return True if given variable is a valid UUID."""
+    return bool(re.search(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}'
+                          r'-[0-9a-f]{4}-[0-9a-f]{12}$',
+                          uuid, re.IGNORECASE))
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - this function returns True if the string it was given is a valid UUID
+            - A UUID consists of a bunch of hexadecimal digits with dashes in between
+            - this is a function that uses a regular expression to validate the string as a UUID
+
+            - is this code readable?
+            - this code is difficult to read because regular expressions are information dense
+          </aside>
+        </section>
+
+        <section data-transition="fade-in slide-out">
+          <p>
+          <pre class="python"><code data-trim>
+def is_valid_uuid(uuid):
+    """Return True if given variable is a valid UUID."""
+    UUID_RE = re.compile(r'''
+        ^
+        [0-9a-f] {8}    # 8 hex digits
+        -
+        [0-9a-f] {4}    # 4 hex digits
+        -
+        [0-9a-f] {4}    # 4 hex digits
+        -
+        [0-9a-f] {4}    # 4 hex digits
+        -
+        [0-9a-f] {12}   # 12 hex digits
+        $
+    ''')
+    return bool(UUID_RE.search(uuid, re.IGNORECASE | re.VERBOSE))
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - If we use verbose mode, we can wrap a regular expression over multiple lines reducing the information density
+            - We've broken those 2 lines into 13
+            - We've also extra whitespace and comments, but the line breaks help the most
+          </aside>
+        </section>
+
+        <!--
+        <section>
+          <div style="text-align: left;">
+            <h4>Copyright Law</h4>
+            <p>On this slide I wanted to place<br>
+            A poem from 1951<br>
+            by a poet I admire.</p>
+
+            <p>The copyright lasts to '46...<br>
+            So I tried to contact the estate<br>
+            but gave up after an hour.<br>
+            <p>&mdash; Trey Hunner
+          </div>
+          <aside class="notes" data-markdown>
+          </aside>
+        </section>
+        -->
+
+        <section>
+          <h2>Text Structure</h2>
+          <ul>
+            <li>Do not rely on automatic line wrapping</li>
+            <li><strong>Insert line breaks with readability in mind</strong></li>
+            <li>Keep your text width to a maximum of 60 characters</li>
+          </ul>
+          <aside class="notes" data-markdown>
+            width:
+            - poets do not break up the lines of their stanzas arbitrarily
+            - poets insert line breaks with purpose
+            - in poetry: inserting a line break is an art form
+            - in code: inserting a line break is also an art form
+            - so as programmers, <strong>we should wrap our lines with care</strong>
+
+            <!--
+            - I personally prefer to think of text in small bundles.  Short multi-line segments that tell a story in miniature parts.
+
+            length:
+            - split groups up and add comments between (like section headers)
+            - move sections into short functions and use comments as docstring
+            -->
+          </aside>
+        </section>
+
+        <section>
+          <p>
+          <pre class="python"><code data-trim>
+          </code></pre>
+          </p>
+        </section>
+
+        <section>
+          <h2>Names matter</h2>
+          <aside class="notes" data-markdown>
+            - If a concept is important, it needs a name
+            - Names give you something to communicate about
+            - naming things is hard because
+              - describing things is hard
+              - shortening a description into a name is hard
+            - if you find yourself using a comment you might need to:
+              - rename a variable to make it more descriptive
+              - bundle up some code into a function or composite variable so that you *can* name it
+            - self-documenting code
+              - don't use two-letter variable names in Python, use descriptive names
+              - use keyword arguments when the purpose of arguments isn't immediately obvious (* in Python 3 for forcing keyword arguments when your own functions are called)
+              - avoid using arbitrary indexes, use tuple unpacking for clarity
+              - Raymond Hettinger's rule for Concise Expressive One-Liners: "One logical line of code equals one sentence in English"
+          </aside>
+        </section>
+
+        <section>
+          <p>
+          <pre class="python"><code data-trim>
+def update_appointment_types(self):
+    """Delete/make appt. types and set default appt. type"""
+
+    self.appt_types.exclude(specialty=self.specialty).delete()
+
+    new_types = self.specialty.appt_types.exclude(doctor=self)
+    self.appt_types.bulk_create(
+        AppointmentType(doctor=self)
+        for type_ in new_types
+    )
+
+    old_default_id = self.default_appt_id
+    self.default_appt_type = self.specialty.default_appt_type
+    if self.default_appt_type.id != old_default_id:
+        self.save(update_fields=['default_appt_type'])
+          </code></pre>
+          </p>
+        </section>
+
+        <section>
+          <p>
+          <pre class="python"><code data-trim>
+def update_appointment_types(self):
+    """Delete/make appt. types and set default appt. type"""
+
+    # Delete appointment types for specialty besides current one
+    self.appt_types.exclude(specialty=self.specialty).delete()
+
+    # Create new appointment types based on specialty (if needed)
+    new_types = self.specialty.appt_types.exclude(doctor=self)
+    self.appt_types.bulk_create(
+        AppointmentType(doctor=self)
+        for type_ in new_types
+    )
+
+    # Set default appointment type based on specialty
+    old_default_id = self.default_appt_id
+    self.default_appt_type = self.specialty.default_appt_type
+    if self.default_appt_type.id != old_default_id:
+        self.save(update_fields=['default_appt_type'])
+          </code></pre>
+          </p>
+        </section>
+
+        <section>
+          <p>
+          <pre class="python"><code data-trim>
+def _delete_stale_appointment_types(self):
+    """Delete appointment types for specialties besides ours"""
+    self.appt_types.exclude(specialty=self.specialty).delete()
+
+def _create_new_appointment_types(self):
+    """Create new appointment types based on specialty if needed"""
+    new_types = self.specialty.appt_types.exclude(doctor=self)
+    self.appt_types.bulk_create(
+        AppointmentType(doctor=self)
+        for type_ in new_types
+    )
+
+def _update_default_appointment_type(self):
+    """Set default appointment type based on specialty"""
+    old_default_id = self.default_appt_id
+    self.default_appt_type = self.specialty.default_appt_type
+    if self.default_appt_type.id != old_default_id:
+        self.save(update_fields=['default_appt_type'])
+
+          </code></pre>
+          </p>
+        </section>
+
+        <section>
+          <p>
+          <pre class="python"><code data-trim>
+def update_appointment_types(self):
+    """Delete/make appt. types and set default appt. type"""
+    self._delete_stale_appointment_types()
+    self._create_new_appointment_types()
+    self._update_default_appointment_type()
+          </code></pre>
+          </p>
+        </section>
+
+        <section>
+          <h2>Set expectations</h2>
+          <aside class="notes" data-markdown>
+            - list comprehensions have a more specific purpose than for loops
+            - Be specific. Intent matters. Counter counts things... I can tell by the name. List comprehensions transform one list to another. That's specific.
+            - Explicit is better than implicit... explicit code conveys intent more clearly. Implicit code leaves the user assuming.
+
+            you can set expectations by:
+            - naming things
+            - adding a comment
+            - 
+        </section>
+
+        <!--
+        <section>
+          <p>
+          <img src="while-loop.png" class="no-style">
+          </p>
+        </section>
+        -->
+
+        <section data-transition="slide-in fade-out">
+          <p>
+            <img src="for-loop-original.png" class="no-style">
+          </p>
+          <aside class="notes" data-markdown>
+            what do you expect this to do?
+          </aside>
+        </section>
+
+        <section data-transition="fade-in slide-out">
+          <p>
+            <img src="for-loop.png" class="no-style">
+          </p>
+          <aside class="notes" data-markdown>
+            what do you expect this to do?
+          </aside>
+        </section>
+
+        <section data-transition="slide-in fade-out">
+          <p>
+            <img src="list-comprehension-original.png" class="no-style">
+          </p>
+          <aside class="notes" data-markdown>
+            what do you expect this to do?
+          </aside>
+        </section>
+
+        <section data-transition="fade-in slide-out">
+          <p>
+            <img src="list-comprehension.png" class="no-style">
+          </p>
+          <aside class="notes" data-markdown>
+            what do you expect this to do?
+          </aside>
+        </section>
+
+        <section>
+          <h2>Mind your constructs</h2>
+          <aside class="notes" data-markdown>
+            - map/filter vs. list comprehension
+            - classes vs. functions
+            - operator overloading vs. custom stuff
+            - person writing the code, person reading the code, person writing code that calls your code
+            - namedtuple, Counter, defaultdict
+            - learn about making context managers, and using operator overloading
+        </section>
+
+        <section>
+          <h3>Case Study: Shopping Cart</h3>
+          <table>
+            <thead>
+              <tr><th>Before</th><th>After</th></tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td><code>cart.contains(item)</code></td><td><code>item in cart</code></td>
+            </tr>
+            <tr>
+              <td><code>cart.set(item, q)</code></td><td><code>cart[item] = q</code></td>
+            </tr>
+            <tr>
+              <td><code>cart.add(item, q)</code></td><td><code>cart[item] += q</code></td>
+            </tr>
+            <tr>
+              <td><code>cart.remove(item)</code></td><td><code>del cart[item]</code></td>
+            </tr>
+            <tr>
+              <td><code>cart.count</code></td><td><code>len(cart)</code></td>
+            </tr>
+            <tr>
+              <td><code>cart.is_empty</code></td><td><code>not cart</code></td>
+            </tr>
+            </tbody>
+          </table>
+          <aside class="notes" data-markdown>
+            If you're making a class that wraps around some a list, a dictionary, or some other type of container... think about whether you can make your own class into a container.
+
+            The API on the left uses custom methods and properties.  Someone trying to use this class will need to learn how it works before they can use it.
+
+            The API on the right uses built-in Python operations that should look very familiar.  We don't need to relearn each bit of functionality for this API because we already know how lists, dictionaries, and other containers work.
+
+            When you're making reusable code, try to rely on Python's built-in constructs when possible.
+
+            Reach for operator overloading when it makes sense.
+          </aside>
+        </section>
+
+        <section>
+          <h3>Container dunder methods</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Dunder Method</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td><code>p in self</code></td>
+              <td><code>__contains__(self, p)</code></td>
+            </tr>
+            <tr>
+              <td><code>self[p] = q</code></td>
+              <td><code>__setitem__(self, p, q)</code></td>
+            </tr>
+            <tr>
+              <td><code>self[p]</code></td>
+              <td><code>__getitem__(self, p)</code></td>
+            </tr>
+            <tr>
+              <td><code>del self[p]</code></td>
+              <td><code>__delitem__(self, p)</code></td>
+            </tr>
+            <tr>
+              <td><code>len(self)</code></td>
+              <td><code>__len__(self, p)</code></td>
+            </tr>
+            <tr>
+              <td><code>not self</code></td>
+              <td><code>__bool__(self)</code> (inverse)</td>
+            </tr>
+            </tbody>
+          </table>
+          <aside class="notes" data-markdown>
+            TODO
+          </aside>
+        </section>
+
+        <section>
+          <h3>Case Study: Database Connection</h3>
+          <p>
+          <pre class="python"><code data-trim>
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            TODO database connection -> context manager
+          </aside>
+        </section>
+
+        <section>
+          <p>
+          <pre class="python"><code data-trim>
+          </code></pre>
+          </p>
+        </section>
+
+        <section>
+          <p>
+          <pre class="python"><code data-trim>
+def get_connection(host, username, password):
+    """Initialize IMAP server and login"""
+    server = IMAP4_SSL(host)
+    server.login(username, password)
+    server.select("inbox")
+    return server
+
+
+def close_connection(server):
+    server.close()
+    server.logout()
+
+
+def get_message_uids(server):
+    """Return unique identifiers for each message"""
+    return server.uid("search", None, "ALL")[1][0].split()
+
+
+def get_message(server, uid):
+    """Get email message identified by given UID"""
+    result, data = server.uid("fetch", uid, "(RFC822)")
+    (_, message_text), _ = data
+    message = Parser().parsestr(message_text)
+    return message
+          </code></pre>
+          </p>
+        </section>
+
+        <section>
+          <p>
+          <pre class="python"><code data-trim>
+class IMAPChecker:
+    def __init__(self, host):
+        """Initialize IMAP email server with given host"""
+        self.server = IMAP4_SSL(host)
+
+    def authenticate(self, username, password):
+        """Authenticate with email server"""
+        self.server.login(username, password)
+        self.server.select("inbox")
+
+    def quit(self):
+        self.server.close()
+        self.server.logout()
+
+    def get_message_uids(self):
+        """Return unique identifiers for each message"""
+        return self.server.uid("search", None, "ALL")[1][0].split()
+
+    def get_message(self, uid):
+        """Get email message identified by given UID"""
+        result, data = self.server.uid("fetch", uid, "(RFC822)")
+        (_, message_text), _ = data
+        message = Parser().parsestr(message_text)
+        return message
+          </code></pre>
+          </p>
+        </section>
+
+        <section>
+          <h2>Cheat sheet</h2>
+          <aside class="notes" data-markdown>
+            - Is there a way you could space out this code to make it more clear?
+            - Is there an opportunity to use a more descriptive name or an opportunity to give a name to a previously unnamed thing?
+            - Is there a different programming construct you could use that might make your intent more clear?
+        </section>
 
         <section style="text-align: left;" data-background="#663399" data-background-transition="slide" data-transition="slide">
           <h1>Final</h1>
