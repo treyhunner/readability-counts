@@ -73,7 +73,20 @@
         </section>
 
         <section>
-          <h2>Structuring Lines of Text</h2>
+          <h2>We will discuss</h2>
+          <ul>
+            <li>Structuring your code</li>
+            <li>Giving concepts a name</li>
+            <li>Choosing the right construct</li>
+          </ul>
+          <aside class="notes" data-markdown>
+            - We're talking about ease of readability for humans, not computers.
+            - During this talk, assume that source code is made primarily for human consumption.
+          </aside>
+        </section>
+
+        <section>
+          <h2>Structuring Code</h2>
           <ul>
             <li><strong>Line length</strong>: number of characters in one line of text</li>
             <li class="fragment"><strong>Text width</strong>: line length without leading spaces</li>
@@ -261,32 +274,181 @@ def is_valid_uuid(uuid):
         </section>
 
         <section>
-          <p>
-          <pre class="python"><code data-trim>
-          </code></pre>
-          </p>
-        </section>
-
-        <section>
           <h2>Names matter</h2>
+          <ul>
+            <li class="fragment">Naming things is hard <span class="fragment">because describing things is hard</span></li>
+            <li class="fragment">Important concepts deserve names</li>
+            <li class="fragment">A name should fully &amp; accurately describe its subject</li>
+          </ul>
           <aside class="notes" data-markdown>
             - If a concept is important, it needs a name
             - Names give you something to communicate about
-            - naming things is hard because
-              - describing things is hard
-              - shortening a description into a name is hard
-            - if you find yourself using a comment you might need to:
-              - rename a variable to make it more descriptive
-              - bundle up some code into a function or composite variable so that you *can* name it
-            - self-documenting code
-              - don't use two-letter variable names in Python, use descriptive names
-              - use keyword arguments when the purpose of arguments isn't immediately obvious (* in Python 3 for forcing keyword arguments when your own functions are called)
-              - avoid using arbitrary indexes, use tuple unpacking for clarity
-              - Raymond Hettinger's rule for Concise Expressive One-Liners: "One logical line of code equals one sentence in English"
+            - People don't usually refer to me as "that guy that does Python training and holds video chats about Python on the Internet,"
+            - People usually call me "Trey".  It's a lot shorter to say.
+            - unfortunately, naming things is hard
+              - naming a thing first requires describing it.  And describing things isn't always easy.
+              - Not only that, once you've described a thing, you need to shorten your description into a name... that's hard too
           </aside>
         </section>
 
-        <section>
+        <section data-transition="slide-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+sc = {}
+for i in csv_data:
+    sc[i[0]] = i[1]
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - don't use two-letter variable names in Python, use descriptive names
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+state_capitals = {}
+for i in capitals_csv_data:
+    state_capitals[i[0]] = i[1]
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+state_capitals = {}
+for s, c, *_ in capitals_csv_data:
+    state_capitals[s] = c
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - avoid using arbitrary indexes, use tuple unpacking for clarity
+          </aside>
+        </section>
+
+        <section data-transition="fade-in slide-out">
+          <p>
+          <p>
+          <pre class="python"><code data-trim>
+state_capitals = {}
+for state, capital, *_ in capitals_csv_data:
+    state_capitals[state] = capital
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+          </aside>
+        </section>
+
+        <section data-transition="slide-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+def detect_anagrams(word, candidates):
+    anagrams = []
+    for candidate in candidates:
+        if (sorted(word.upper()) == sorted(candidate.upper())
+                and word.upper() != candidate.upper()):
+            anagrams.append(candidate)
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - this code returns a list of all anagrams
+            - it's not bad code, but it's also not the most descriptive code
+            - that `if` statement in particular is pretty loaded
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+def detect_anagrams(word, candidates):
+    anagrams = []
+    for candidate in candidates:
+        if is_anagram(candidate):
+            anagrams.append(candidate)
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - what if we abstracted out that logic into its own function
+            - it's now more obvious that the condition we were using checks whether two words were anagrams
+            - we've broken down this problem for the reader by abstracting away the exact method we use for checking anagrams because
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+def is_anagram(word1, word2):
+    return (sorted(word1.upper()) == sorted(word2.upper())
+            and word1.upper() != word2.upper())
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - now let's look at that new `is_anagram` function
+            - let's start by removing the duplication in uppercasing our words
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+def is_anagram(word1, word2):
+    word1, word2 = word1.upper(), word2.upper()
+    return sorted(word1) == sorted(word2) and word1 != word2
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - we're uppercasing our words, sorting them, checking whether they sorted versions are equal and then checking whether the unsorted versions are not equal
+            - that description isn't very helpful
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+def is_anagram(word1, word2):
+    word1, word2 = word1.upper(), word2.upper()
+    are_different_words = (word1 != word2)
+    have_same_letters = (sorted(word1) == sorted(word2))
+    return have_same_letters and are_different_words
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - we're actually checking whether these words have the same letters but are different words
+            - naming these conditions makes our logic more explicit
+            - this code is more clear because we've documented our the intent of our algorithm and not just the details
+          </aside>
+        </section>
+
+        <section data-transition="fade-in slide-out">
+          <p>
+          <pre class="python"><code data-trim>
+def detect_anagrams(word, candidates):
+    anagrams = []
+    for candidate in candidates:
+        if is_anagram(word, candidate):
+            anagrams.append(candidate)
+
+
+def is_anagram(word1, word2):
+    word1, word2 = word1.upper(), word2.upper()
+    are_different_words = word1 != word2
+    have_same_letters = sorted(word1) == sorted(word2)
+    return have_same_letters and are_different_words
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - we've added an extra four lines to our code, but in doing so we've broken our code into more understandable chunks
+            - you may think this example is silly
+            - I mean what we started with wasn't really that complex
+            - but even if we decided to revert some or all of these changes, the exercise was worthwhile
+            - always think about ways you can make your code more self-documenting
+          </aside>
+        </section>
+
+        <section data-transition="slide-in fade-out">
           <p>
           <pre class="python"><code data-trim>
 def update_appointment_types(self):
@@ -306,11 +468,76 @@ def update_appointment_types(self):
         self.save(update_fields=['default_appt_type'])
           </code></pre>
           </p>
+          <aside class="notes" data-markdown>
+            - This function is a method that lives inside a Django model
+            - There's a lot going on in this function
+            - Instead of reading this whole function, I want you to unfocus your eyes and just look at the structure
+            - Let me help you out.
+          </aside>
         </section>
 
-        <section>
+
+        <section data-transition="fade-in fade-out">
           <p>
-          <pre class="python"><code data-trim>
+          <pre class="python"><code data-trim data-noescape>
+def update_appointment_types(self):
+    """Delete/make appt. types and set default appt. type"""
+
+    <span class="blur">self.appt_types.exclude(specialty=self.specialty).delete()</span>
+
+    <span class="blur">new_types = self.specialty.appt_types.exclude(doctor=self)
+    self.appt_types.bulk_create(
+        AppointmentType(doctor=self)
+        for type_ in new_types
+    )</span>
+
+    <span class="blur">old_default_id = self.default_appt_id
+    self.default_appt_type = self.specialty.default_appt_type
+    if self.default_appt_type.id != old_default_id:
+        self.save(update_fields=['default_appt_type'])</span>
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - There.  Now I can talk without you getting distracted by reading
+            - The first thing you'll notice is that this code is broken up into three sections
+            - This code was broken into three sections because each section performs a different task
+
+            - Let's add comments to these sections
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim data-noescape>
+def update_appointment_types(self):
+    """Delete/make appt. types and set default appt. type"""
+
+    # Delete appointment types for specialty besides current one
+    <span class="blur">self.appt_types.exclude(specialty=self.specialty).delete()</span>
+
+    # Create new appointment types based on specialty (if needed)
+    <span class="blur">new_types = self.specialty.appt_types.exclude(doctor=self)
+    self.appt_types.bulk_create(
+        AppointmentType(doctor=self)
+        for type_ in new_types
+    )</span>
+
+    # Set default appointment type based on specialty
+    <span class="blur">old_default_id = self.default_appt_id
+    self.default_appt_type = self.specialty.default_appt_type
+    if self.default_appt_type.id != old_default_id:
+        self.save(update_fields=['default_appt_type'])</span>
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - Adding comments improves the readability of this code
+            - We can now understand what each section does without reading it
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim data-noescape>
 def update_appointment_types(self):
     """Delete/make appt. types and set default appt. type"""
 
@@ -331,35 +558,79 @@ def update_appointment_types(self):
         self.save(update_fields=['default_appt_type'])
           </code></pre>
           </p>
+          <aside class="notes" data-markdown>
+            - You no longer need to read every character to understand the general gist of this code
+            - Depending on why you're reading this code, you might even be able to get away with only reading the comments
+            - if you find yourself using a comment you might need to:
+              - rename a variable to make it more descriptive
+              - create a variable that didn't exist before: either bundle up some code into a function or make a composite variable
+          </aside>
         </section>
 
-        <section>
+        <section data-transition="fade-in fade-out">
           <p>
-          <pre class="python"><code data-trim>
-def _delete_stale_appointment_types(self):
-    """Delete appointment types for specialties besides ours"""
-    self.appt_types.exclude(specialty=self.specialty).delete()
+          <pre class="python"><code data-trim data-noescape>
+def update_appointment_types(self):
+    """Delete/make appt. types and set default appt. type"""
 
-def _create_new_appointment_types(self):
-    """Create new appointment types based on specialty if needed"""
-    new_types = self.specialty.appt_types.exclude(doctor=self)
+    # Delete appointment types for specialty besides current one
+    <span class="blur">self.appt_types.exclude(specialty=self.specialty).delete()</span>
+
+    # Create new appointment types based on specialty (if needed)
+    <span class="blur">new_types = self.specialty.appt_types.exclude(doctor=self)
     self.appt_types.bulk_create(
         AppointmentType(doctor=self)
         for type_ in new_types
-    )
+    )</span>
+
+    # Set default appointment type based on specialty
+    <span class="blur">old_default_id = self.default_appt_id
+    self.default_appt_type = self.specialty.default_appt_type
+    if self.default_appt_type.id != old_default_id:
+        self.save(update_fields=['default_appt_type'])</span>
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - I bet you've heard people say you shouldn't need to add comments to your code
+            - Or maybe you've heard someone say your code should be self-documenting
+            - Let's try to make this code more self-documenting by naming each of these sections
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim data-noescape>
+def _delete_stale_appointment_types(self):
+    """Delete appointment types for specialties besides ours"""
+    <span class="blur">self.appt_types.exclude(specialty=self.specialty).delete()</span>
+
+def _create_new_appointment_types(self):
+    """Create new appointment types based on specialty if needed"""
+    <span class="blur">new_types = self.specialty.appt_types.exclude(doctor=self)
+    self.appt_types.bulk_create(
+        AppointmentType(doctor=self)
+        for type_ in new_types
+    )</span>
 
 def _update_default_appointment_type(self):
     """Set default appointment type based on specialty"""
-    old_default_id = self.default_appt_id
+    <span class="blur">old_default_id = self.default_appt_id
     self.default_appt_type = self.specialty.default_appt_type
     if self.default_appt_type.id != old_default_id:
-        self.save(update_fields=['default_appt_type'])
+        self.save(update_fields=['default_appt_type'])</span>
 
           </code></pre>
           </p>
+          <aside class="notes" data-markdown>
+            - We've named each of these three sections of code by making them into functions
+            - These functions are methods that live next our original method.  There helper functions of sorts.
+            - I've left in the comments as documentation strings for clarity
+
+            - now that we've moved these sections of code into functions we need to call them in our original function
+          </aside>
         </section>
 
-        <section>
+        <section data-transition="fade-in slide-out">
           <p>
           <pre class="python"><code data-trim>
 def update_appointment_types(self):
@@ -369,74 +640,140 @@ def update_appointment_types(self):
     self._update_default_appointment_type()
           </code></pre>
           </p>
-        </section>
-
-        <section>
-          <h2>Set expectations</h2>
           <aside class="notes" data-markdown>
-            - list comprehensions have a more specific purpose than for loops
-            - Be specific. Intent matters. Counter counts things... I can tell by the name. List comprehensions transform one list to another. That's specific.
-            - Explicit is better than implicit... explicit code conveys intent more clearly. Implicit code leaves the user assuming.
-
-            you can set expectations by:
-            - naming things
-            - adding a comment
-            - 
-        </section>
-
-        <!--
-        <section>
-          <p>
-          <img src="while-loop.png" class="no-style">
-          </p>
-        </section>
-        -->
-
-        <section data-transition="slide-in fade-out">
-          <p>
-            <img src="for-loop-original.png" class="no-style">
-          </p>
-          <aside class="notes" data-markdown>
-            what do you expect this to do?
-          </aside>
-        </section>
-
-        <section data-transition="fade-in slide-out">
-          <p>
-            <img src="for-loop.png" class="no-style">
-          </p>
-          <aside class="notes" data-markdown>
-            what do you expect this to do?
-          </aside>
-        </section>
-
-        <section data-transition="slide-in fade-out">
-          <p>
-            <img src="list-comprehension-original.png" class="no-style">
-          </p>
-          <aside class="notes" data-markdown>
-            what do you expect this to do?
-          </aside>
-        </section>
-
-        <section data-transition="fade-in slide-out">
-          <p>
-            <img src="list-comprehension.png" class="no-style">
-          </p>
-          <aside class="notes" data-markdown>
-            what do you expect this to do?
+            - I don't know about you, but I find this a lot easier to digest than three undocumented code blocks
+            - these actions now have names and we can refer to them by name
+            - we really don't need to worry about the details when we first read this function, so names should be good enough
           </aside>
         </section>
 
         <section>
           <h2>Mind your constructs</h2>
+          <ul>
+            <li><strong>Special purpose constructs</strong> can reduce complexity</li>
+            <li>When possible, use constructs with specific intent</li>
+          </ul>
           <aside class="notes" data-markdown>
+            - If you have a specific problem, use a specific solution
+            - I usually prefer programming constructs with specific use cases over constructs with general use cases
+
             - map/filter vs. list comprehension
-            - classes vs. functions
-            - operator overloading vs. custom stuff
             - person writing the code, person reading the code, person writing code that calls your code
             - namedtuple, Counter, defaultdict
-            - learn about making context managers, and using operator overloading
+        </section>
+
+        <section data-transition="slide-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+def delete_file(my_file):
+    """Delete file or do nothing if file doesn't exist."""
+    try:
+        os.remove(my_file)
+    except FileNotFoundError:
+        pass
+          </code></pre>
+          </p>
+        </section>
+
+        <section data-transition="fade-in slide-out">
+          <p>
+          <pre class="python"><code data-trim>
+from contextlib import suppress
+
+def delete_file(my_file):
+    """Delete file or do nothing if file doesn't exist."""
+    with suppress(FileNotFoundError):
+        os.remove(my_file)
+          </code></pre>
+          </p>
+        </section>
+
+        <section data-transition="slide-in fade-out">
+          <p>
+          <pre class="python"><code data-trim data-noescape>
+<span class="blur">employees  = []</span>
+for <span class="blur">calendar, availabilities</span> in <span class="blur">calendar_availabilities</span>:
+    <span class="blur">if availabilities:
+        employees.append(calendar.employee)</span>
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            This code loops over something
+
+            You can tell that even though it's blurred out.
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim data-noescape>
+employees  = []
+for <span class="blur">calendar, availabilities</span> in <span class="blur">calendar_availabilities</span>:
+    if <span class="blur">availabilities</span>:
+        employees.append(<span class="blur">calendar.employee</span>)
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            The express purpose of this code is to
+            1. loop over something
+            2. check a condition
+            3. and create a new list from items that pass the condition
+
+            We're using a list append, an if statement, and a for loop to accomplish this task.
+          </aside>
+        </section>
+
+        <section data-transition="fade-in slide-out">
+          <p>
+          <pre class="python"><code data-trim data-noescape>
+employees = [
+    <span class="blur">calendar.employee</span>
+    for <span class="blur">(calendar, availabilities)</span> in
+    <span class="blur">calendar_availabilities</span>
+    if <span class="blur">availabilities</span>
+]
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - This code is equivalent to what we just saw...
+            - but instead of using a for loop, if statement, and an append call
+            - we're using a list comprehension
+            - this code isn't shorter, but it does have less unnecessary information
+            - we can tell at a glance that one list is being transformed into another
+          </aside>
+        </section>
+
+        <section>
+          <p>
+          <pre class="python"><code data-trim data-noescape>
+class ShoppingCart:
+    def contains(self, product):
+        """Return True if cart contains the product."""
+
+    def add(self, product, quantity):
+        """Add the quantity of a product to the cart."""
+
+    def remove(self, product):
+        """Completely remove a product from the cart."""
+
+    def set(self, product, quantity):
+        """Set the quantity of a product in the cart."""
+
+    @property
+    def count(self):
+        """Return product count in cart, ignoring quantities."""
+
+    @property
+    def is_empty(self):
+        """Return True if cart is empty."""
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - this shopping cart class is a wrapper around a dictionary
+            - notice that this class implements a lot of methods that really just access that dictionary in a fancy way
+            - there's methods to check for containment, add, and remove quantities of products, and ask questions about the status of our cart
+            - these methods should all seem familiar
+          </aside>
         </section>
 
         <section>
@@ -467,18 +804,43 @@ def update_appointment_types(self):
             </tbody>
           </table>
           <aside class="notes" data-markdown>
-            If you're making a class that wraps around some a list, a dictionary, or some other type of container... think about whether you can make your own class into a container.
+            - all of these methods correspond to operations that work automatically on many native Python objects, like dictionaries and lists
+            - when we use custom methods and properties, someone trying to use our class will need to learn how it works first
+            - if we use built-in Python operators instead, users won't need to learn as much because they probably already know how lists and dictionaries work
 
-            The API on the left uses custom methods and properties.  Someone trying to use this class will need to learn how it works before they can use it.
-
-            The API on the right uses built-in Python operations that should look very familiar.  We don't need to relearn each bit of functionality for this API because we already know how lists, dictionaries, and other containers work.
-
-            When you're making reusable code, try to rely on Python's built-in constructs when possible.
-
-            Reach for operator overloading when it makes sense.
+            TODO When you're making reusable code, try to rely on Python's built-in constructs when possible.
           </aside>
         </section>
 
+        <section>
+          <p>
+          <pre class="python"><code data-trim data-noescape>
+class ShoppingCart:
+    def __contains__(self, product):
+        """Return True if cart contains the product."""
+
+    def __setitem__(self, product, quantity):
+        """Set the quantity of a product in the cart."""
+
+    def __delitem__(self, product):
+        """Completely remove a product from the cart."""
+
+    def __len__(self):
+        """Return product count in cart, ignoring quantities."""
+
+    def __bool__(self):
+        """Return True if cart is non-empty."""
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - we can achieve this new API by embracing operator overloading and using dunder methods
+            - with this change, our shopping cart container will feel more like a native Python object
+            - and new users will find it much easier to learn and to use
+            - Don't be afraid to reach for operator overloading when it makes sense
+          </aside>
+        </section>
+
+        <!--
         <section>
           <h3>Container dunder methods</h3>
           <table>
@@ -516,92 +878,146 @@ def update_appointment_types(self):
             </tbody>
           </table>
           <aside class="notes" data-markdown>
-            TODO
           </aside>
         </section>
+        -->
 
-        <section>
-          <h3>Case Study: Database Connection</h3>
+        <section data-transition="slide-in none-out">
           <p>
-          <pre class="python"><code data-trim>
-          </code></pre>
-          </p>
-          <aside class="notes" data-markdown>
-            TODO database connection -> context manager
-          </aside>
-        </section>
-
-        <section>
-          <p>
-          <pre class="python"><code data-trim>
-          </code></pre>
-          </p>
-        </section>
-
-        <section>
-          <p>
-          <pre class="python"><code data-trim>
+          <pre class="python"><code data-trim data-noescape>
 def get_connection(host, username, password):
     """Initialize IMAP server and login"""
-    server = IMAP4_SSL(host)
+    <span class="blur">server = IMAP4_SSL(host)
     server.login(username, password)
-    server.select("inbox")
+    server.select("inbox")</span>
     return server
 
 
 def close_connection(server):
-    server.close()
-    server.logout()
+    <span class="blur">server.close()
+    server.logout()</span>
 
 
 def get_message_uids(server):
     """Return unique identifiers for each message"""
-    return server.uid("search", None, "ALL")[1][0].split()
+    <span class="blur">return server.uid("search", None, "ALL")[1][0].split()</span>
 
 
 def get_message(server, uid):
     """Get email message identified by given UID"""
-    result, data = server.uid("fetch", uid, "(RFC822)")
+    <span class="blur">result, data = server.uid("fetch", uid, "(RFC822)")
     (_, message_text), _ = data
     message = Parser().parsestr(message_text)
-    return message
+    return message</span>
           </code></pre>
           </p>
+          <aside class="notes" data-markdown>
+            This code connects to an IMAP server and reads email
+          </aside>
+        </section>
+
+        <section data-transition="none">
+          <p>
+          <pre class="python"><code data-trim data-noescape>
+def get_connection(host, username, password):
+    """Initialize IMAP server and login"""
+    <span class="blur">server = IMAP4_SSL(host)
+    server.login(username, password)
+    server.select("inbox")</span>
+    return <strong>server</strong>
+
+
+def close_connection(<strong>server</strong>):
+    <span class="blur">server.close()
+    server.logout()</span>
+
+
+def get_message_uids(<strong>server</strong>):
+    """Return unique identifiers for each message"""
+    <span class="blur">return server.uid("search", None, "ALL")[1][0].split()</span>
+
+
+def get_message(<strong>server</strong>, uid):
+    """Get email message identified by given UID"""
+    <span class="blur">result, data = server.uid("fetch", uid, "(RFC822)")
+    (_, message_text), _ = data
+    message = Parser().parsestr(message_text)
+    return message</span>
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            Notice that one of these functions returns a server object and the other three functions accept server object.
+
+            This should be a hint that something weird is going on.
+
+            If you ever that you're repeatedly passing the same data to multiple functions, think of making a class.
+
+          </aside>
+        </section>
+
+        <section data-transition="fade-in slide-out">
+          <p>
+          <pre class="python"><code data-trim data-noescape>
+class IMAPChecker:
+    def __init__(<strong>self</strong>, host):
+        """Initialize IMAP email server with given host"""
+        <span class="blur">self.server = IMAP4_SSL(host)</span>
+
+    def authenticate(<strong>self</strong>, username, password):
+        """Authenticate with email server"""
+        <span class="blur">self.server.login(username, password)
+        self.server.select("inbox")</span>
+
+    def quit(<strong>self</strong>):
+        <span class="blur">self.server.close()
+        self.server.logout()</span>
+
+    def get_message_uids(<strong>self</strong>):
+        """Return unique identifiers for each message"""
+        <span class="blur">return self.server.uid("search", None, "ALL")[1][0].split()</span>
+
+    def get_message(<strong>self</strong>, uid):
+        """Get email message identified by given UID"""
+        <span class="blur">result, data = self.server.uid("fetch", uid, "(RFC822)")
+        (_, message_text), _ = data
+        message = Parser().parsestr(message_text)
+        return message</span>
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            This is exactly what classes are for.
+
+            Classes bundle functionality and data together.
+          </aside>
         </section>
 
         <section>
-          <p>
-          <pre class="python"><code data-trim>
-class IMAPChecker:
-    def __init__(self, host):
-        """Initialize IMAP email server with given host"""
-        self.server = IMAP4_SSL(host)
+          <h2>Summary of our code changes</h2>
+          <ul>
+            <li>Think about using a context manager when you notice duplicate code wrapped around other code</li>
+            <li>When converting one list to another, use a list comprehension</li>
+            <li>Don't be afraid to use dunder methods</li>
+            <li>Classes are good for bundling up code and data</li>
+          </ul>
+          <aside class="notes" data-markdown>
+            - When you find yourself wrapping code in redundant try-finally or try-except blocks, think
+            - If you have a specific problem, use a specific solution
+            - I usually prefer programming constructs with specific use cases over constructs with general use cases
 
-    def authenticate(self, username, password):
-        """Authenticate with email server"""
-        self.server.login(username, password)
-        self.server.select("inbox")
-
-    def quit(self):
-        self.server.close()
-        self.server.logout()
-
-    def get_message_uids(self):
-        """Return unique identifiers for each message"""
-        return self.server.uid("search", None, "ALL")[1][0].split()
-
-    def get_message(self, uid):
-        """Get email message identified by given UID"""
-        result, data = self.server.uid("fetch", uid, "(RFC822)")
-        (_, message_text), _ = data
-        message = Parser().parsestr(message_text)
-        return message
-          </code></pre>
-          </p>
+            - map/filter vs. list comprehension
+            - person writing the code, person reading the code, person writing code that calls your code
+            - namedtuple, Counter, defaultdict
         </section>
 
         <section>
           <h2>Cheat sheet</h2>
+          <ol>
+            <li>Can I modify line breaks or spacing to improve clarity?</li>
+            <li>Can I create a variable name for an unnamed bit of code?</li>
+            <li>Can I add a comment to improve clarity?</li>
+            <li>Can I turn a comment into a better variable name?</li>
+            <li>Can I use a more specific programming construct?</li>
+          </ol>
           <aside class="notes" data-markdown>
             - Is there a way you could space out this code to make it more clear?
             - Is there an opportunity to use a more descriptive name or an opportunity to give a name to a previously unnamed thing?
