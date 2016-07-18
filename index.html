@@ -31,32 +31,39 @@
           <small><a href="https://treyhunner.com" rel="author">Trey Hunner</a> / <a href="https://twitter.com/treyhunner">@treyhunner</a></small>
           </p>
           <aside class="notes" data-markdown>
-            TODO
+            Hey everybody! 😄
+
+            So let's talk about readability.
           </aside>
         </section>
 
         <section>
           <p><blockquote cite="https://en.wikipedia.org/w/index.php?title=Readability&oldid=727348214">“Readability is the ease with which a reader can understand a written text.” &mdash;<a href="https://en.wikipedia.org/w/index.php?title=Readability&oldid=727348214">Wikipedia</a></blockquote></p>
           <aside class="notes" data-markdown>
-            TODO
-            - first let's define readability
+            - alright, so before we talk about readability, let's make sure we're all on the same page about what readability means
+            - readability is just the measure of **how easily our code can be read**
+            - I assume you're all here because you care about readability.
+            - But why do you care about readability?
+            - What makes readability important?
           </aside>
         </section>
 
         <section>
           <h2>Why does readability matter?</h2>
           <ul>
-            <li>Readability is about making our lives easier.</li>
-            <li>Code is read more often than it is written.</li>
-            <li>Better readability means easier maintainability.</li>
+            <li>Readability is about making our lives easier</li>
+            <li>Code is read more often than it is written</li>
+            <li>Better readability means easier maintainability</li>
+            <li>Readable code makes on-boarding easier</li>
           </ul>
           <aside class="notes" data-markdown>
-            TODO
-            - care for readability is based on the assumption that it should be easy to read code
-            - it should be easy to read code because code is read more often than it's written
-            - every time you fix a bug, change behavior, or add a feature: you probably need to read some code
-            - code usually doesn't completely stagnate immediately after it's written... it tends to change, even if only temporarily
-            - readability is a prerequisite for maintainability. You cannot maintain code without reading it.
+            - every time you **fix a bug**, **change some functionality**, or **add a feature**, you probably need to read some code
+            - so you **probably read code more often than you write it**
+            - also code doesn't *always* completely stagnate after it's written.  Sometimes you do need to change code.
+            - and in order to change code you **sort of need to read it**.
+            - so readability is a **prerequisite for maintainability**. You *cannot* maintain code without reading it.
+            - Lastly, not *all* teams are immortal.  You do *sometimes* need to *hire* developers and those developers will need to be on-boarded.
+            - It's **a lot** easier to on-board a new team member if they can **read your code with ease**
           </aside>
         </section>
 
@@ -65,63 +72,72 @@
           <ul>
             <li>Performance</li>
             <li>Writability</li>
+            <li>Python-speaking robots</li>
           </ul>
           <aside class="notes" data-markdown>
-            - We're talking about ease of readability for humans, not computers.
-            - During this talk, assume that source code is made primarily for human consumption.
+            - Before we get started, let's make it clear what we're *not* talking about
+            - We're not going to talk about how easy it is to *write* code
+            - We're also not going to talk about how easy it is for a *computer to run* your code
+            - During this talk, we're assuming that source code is primarily designed for human consumption
+            - We're talking *specifically* about how easy it is *for humans* to read your code
           </aside>
         </section>
 
         <section>
           <h2>We will discuss</h2>
           <ul>
-            <li>Structuring your code</li>
+            <li>Whitespace, line breaks, and code structure</li>
             <li>Giving concepts a name</li>
             <li>Choosing the right construct</li>
           </ul>
           <aside class="notes" data-markdown>
-            - We're talking about ease of readability for humans, not computers.
-            - During this talk, assume that source code is made primarily for human consumption.
+            - we'll talk about how you structure your code: which basically boils down to where you put your line breaks
+            - We'll also discuss naming *unnamed* things and **naming things descriptively**
+            - And finally we'll re-consider some of the programming idioms that we use every day
+            - We'll be looking at a lot of small code examples.  I'll tweet these slides out after the talk, so you can re-read each of these examples later.
           </aside>
         </section>
 
         <section>
-          <h2>Structuring Code</h2>
+          <h2>Structuring code</h2>
           <ul>
-            <li><strong>Line length</strong>: number of characters in one line of text</li>
-            <li class="fragment"><strong>Text width</strong>: line length without leading spaces</li>
+            <li class="fragment">Line length is a human limitation, not technical one</li>
+            <li class="fragment"><strong>Line length</strong>: number of characters in one line of text</li>
+            <li class="fragment"><strong>Text width</strong>: line length without indentation</li>
+            <li class="fragment">I prefer keeping my text width <strong>under</strong> 60 characters</li>
+            <li class="fragment">Focus on readability when wrapping lines, not line length</li>
           </ul>
           <aside class="notes" data-markdown>
             - Let's talk about the structure of our code first
-            - at this point in history, screens are wide enough to fit lots of text
-            - line length is not a technical limitation, it's a human limitation
-            - we impose a line length on ourselves for readability because long lines are difficult to read
-
-            - Line length is a flawed metric "Line length" values indentation the same as the rest of our text
-            - Instead of line length, let's talk about text width.  Text width ignores indentation
-            - An 80 character line with a 20 spaces of indentation has a text width of 60
+            - **🖱** In the modern age, line length is no longer a technical limitation.  Screens are **really** wide now.
+            - Line length is not about punch cards, it's about readability
+            - **Long lines are hard to read**.
+            - **🖱** Line length is a little flawed though because when it comes to readability, indentation isn't quite the same as code
+            - **🖱** So instead of focusing on the line of our lines, I'm going to focus on the width of our text
+            - **🖱** I don't know what a good average text width is, but a 60 characters maximum seems like decent goal
+            - **🖱** Most importantly of all, when inserting line breaks **make sure that you're focusing on readability**.
+            - Short lines are *not* the end goal: readability is
           </aside>
         </section>
 
+        <!--
         <section>
-          <h2>Optimal Text Width</h2>
+          <h2>Optimal text width</h2>
           <ul>
             <li>The bullet points on these slides automatically wrap text around 50 to 60 characters</li>
-            <li>Comfortable line lengths for English prose seem to fall somewhere between 40 and 80 characters</li>
-            <li class="fragment">Try using a <strong>maximum text width of 60 characters</strong></li>
           </ul>
           <aside class="notes" data-markdown>
             - Let's talk about the optimal text width.
             - English prose wrapped at 60 characters usually seems to be a fairly readable
+            - That's about the width of the slides in this presentation
             - Source code can be a lot more dense than English though
             - There's also a lot more structure and punctuation in source code than there is in English
-            - I don't know what a good average text width is for code, but 60 characters seems to be a good maximum
-            - I'm proposing that we attempt to stick to a maximum text width of 60 characters
+            - so I'm proposing that we attempt to stick to a maximum text width of 60 characters
           </aside>
         </section>
 
         <section>
-          <h2>Text Structure</h2>
+          <h2>Code structure</h2>
           <ul>
             <li><strong>Text length</strong>: number of consecutive non-empty lines</li>
             <li>Let's assume a maximum indentation of 24 spaces</li>
@@ -132,9 +148,24 @@
             - Unfortunately our linting tools talk about line length and not text width so we need to translate our recommendations into line length
 
             - 24 spaces is 6 levels of indentation
-            - That's the largest indentation I've found in my own Django apps
+            - That's a pretty deep indentation
+            - It's the largest indentation I've found in my own Django apps
 
-            - If we're trying to ensure a maximum text width of 60 and a maximum length of 90 should be plenty if we're keeping our indentation under 6 levels deep
+            - If we're trying to ensure a maximum text width of 60,
+            - and we're keeping our indentation under 6 levels deep,
+            - then a maximum length of 90 should be plenty
+            - remember that this an absolute maximum... we're trying to write code under this length
+          </aside>
+        </section>
+        -->
+
+        <section>
+
+        <section>
+          <h2>Wrapping Lines</h2>
+          <ul>
+          <aside class="notes" data-markdown>
+            Let's talk about line breaks
           </aside>
         </section>
 
@@ -148,12 +179,14 @@ return min(h for h in employee_hours if h is not None)
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - this code has a text width under 60
-            - as you read this code, you're trying to figure out what it does
-            - you won't figure out what it does until you discover the structure of the code
-            - you'll eventually notice that the first statement includes a <strong>generator expression with 2 loops</strong> and the second statement includes a <strong>generation expressions with a single loop and a conditional statement</strong>
-            - this code is hard to read because the line breaks are inserted arbitrarily
-            - the author only wrapped their lines when they were near the maximum text width
+            - this code has a text width **under 60 characters**
+            - as you read this code, you're probably trying to figure out what it does
+            - but you *won't* figure out what it does until you've discovered the structure of the code
+            - you'll eventually notice that that 1st statement includes a **generator expression with 2 loops**
+            - and that 2nd statement includes a **generation expressions with a single loop and a condition**
+            - this code is hard to read because the line breaks are inserted **completely arbitrarily**
+            - the author simply wrapped their lines whenever they were approaching a certain line length
+            - the author was valuing the text width or the line length as most important. They completely forgot about readability.
           </aside>
         </section>
 
@@ -174,12 +207,158 @@ return min(
           </p>
           <aside class="notes" data-markdown>
             - is this code more readable?
-            - this is the same code as before, but the line breaks have moved around
-            - this time, the line breaks split up the code into logical parts
-            - these line breaks were inserted with the purpose of readability
+            - this is the same code as before
+            - but the line breaks have been moved around to split the code up into logical parts
+            - these line breaks **not inserted arbitrarily**
+            - *these* line breaks were inserted with the *express goal* of **improving readability**
 
-            - let's look at another example
-          </asid>
+          </aside>
+        </section>
+
+        </section>
+
+        <section>
+
+        <section>
+          <h2>Function Calls</h2>
+          <ul>
+          <aside class="notes" data-markdown>
+            - Let's look at another example.
+            - Let's say we're creating a Django model
+            - and one of our model fields has a *whole bunch* of arguments being passed to it
+          </aside>
+        </section>
+
+        <section data-transition="slide-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+default_appointment = models.ForeignKey(
+    'AppointmentType', null=True, on_delete=models.SET_NULL,
+    related_name='+')
+          </code></pre>
+          <pre class="python fragment"><code data-trim>
+default_appointment = models.ForeignKey('AppointmentType',
+                                        null=True,
+                                        on_delete=models.SET_NULL,
+                                        related_name='+')
+          </code></pre>
+          <pre class="python fragment"><code data-trim>
+default_appointment = models.ForeignKey(
+    'AppointmentType',
+    null=True,
+    on_delete=models.SET_NULL,
+    related_name='+')
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - So we're passing a lot of arguments into this ForeignKey field
+            - and it's feeling unwieldy
+            - *(pause)*
+            - Is this a good way wrap our code over multiple lines?
+            - **🖱** What about this way?
+            - Is this better?  Or is it worse?
+            - **🖱** What about this one?  How does it compare?
+            - Would anything change if we were using exclusively keyword arguments?
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+default_appointment = models.ForeignKey(
+    othermodel='AppointmentType', null=True,
+    on_delete=models.SET_NULL, related_name='+')
+          </code></pre>
+          <pre class="python"><code data-trim style="overflow: hidden;">
+default_appointment = models.ForeignKey(othermodel='AppointmentType',
+                                        null=True,
+                                        on_delete=models.SET_NULL,
+                                        related_name='+')
+          </code></pre>
+          <pre class="python"><code data-trim>
+default_appointment = models.ForeignKey(
+    othermodel='AppointmentType',
+    null=True,
+    on_delete=models.SET_NULL,
+    related_name='+')
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - Would that affect our choice?
+            - *(pause)*
+            - So personally... I *usually prefer* that last strategy for wrapping my lines, especially with all keyword arguments
+            - That first one is difficult to read and the second one can be problematic when you have really long lines *like we do right now*
+            - Let's take a look at that last strategy more closely
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python">
+<code>default_appointment = models.ForeignKey(
+    othermodel='AppointmentType',
+    null=True,
+    on_delete=models.SET_NULL,
+    related_name='+')
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - *(pause)*
+            - Would it be better to leave that closing parenthesis on its own line? **🖱** 
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim data-noescape>
+default_appointment = models.ForeignKey(
+    othermodel='AppointmentType',
+    null=True,
+    on_delete=models.SET_NULL,
+    related_name='+'
+<strong>)</strong>
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - *(pause)*
+            - What if we added a trailing comma?  Would this be an improvement or is this worse? **🖱**
+          </aside>
+        </section>
+
+        <section data-transition="fade-in slide-out">
+          <p>
+          <pre class="python"><code data-trim data-noescape>
+default_appointment = models.ForeignKey(
+    othermodel='AppointmentType',
+    null=True,
+    on_delete=models.SET_NULL,
+    related_name='+'<strong>,</strong>
+)
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - Personally, I prefer this one the most *when I'm calling a function or a class on its own*
+            - But not when I'm defining a function
+            - Now... I'm *certain* that *many of you* disagree with my preferences here... and that's okay
+            - The fact that we disagree means that we must document the way that we wrap functions in our **style guide** for **every. project. we. create.**
+            - You* **do** have* a style guide for **every project you work on**... right?
+            - *(pause and lift an eyebrow)*
+            - *Consistency* lies at *the heart* of readability.
+            - Make sure you define a style guide with **explicit conventions** in *every single Django project you make*.
+          </aside>
+        </section>
+
+        </section>
+
+        <!--
+        <section>
+
+        <section>
+          <h2>Verbose Mode</h2>
+          <ul>
+          <aside class="notes" data-markdown>
+            TODO
+          </aside>
         </section>
 
         <section data-transition="slide-in fade-out">
@@ -230,6 +409,9 @@ def is_valid_uuid(uuid):
           </aside>
         </section>
 
+        </section>
+        -->
+
         <!--
         <section>
           <div style="text-align: left;">
@@ -249,45 +431,51 @@ def is_valid_uuid(uuid):
         -->
 
         <section>
-          <h2>Text Structure</h2>
+          <h2>Recap: code structure</h2>
           <ul>
+            <li>Keep your text width narrow (60 characters or less)</li>
             <li>Do not rely on automatic line wrapping</li>
-            <li><strong>Insert line breaks with readability in mind</strong></li>
-            <li>Keep your text width to a maximum of 60 characters</li>
+            <li>Insert line breaks with readability in mind</li>
+            <li>Document your code styles and stick to them</li>
           </ul>
           <aside class="notes" data-markdown>
-            width:
-            - poets do not break up the lines of their stanzas arbitrarily
-            - poets insert line breaks with purpose
+            - do poets use a maximum line length to wrap their lines?
+            - **No!** poets break up their line breaks with purpose.
             - in poetry: inserting a line break is an art form
-            - in code: inserting a line break is also an art form
-            - so as programmers, <strong>we should wrap our lines with care</strong>
-
-            <!--
-            - I personally prefer to think of text in small bundles.  Short multi-line segments that tell a story in miniature parts.
-
-            length:
-            - split groups up and add comments between (like section headers)
-            - move sections into short functions and use comments as docstring
-            -->
+            - in code: inserting a line break is *also* an art form
+            - so as programmers, we should **wrap our lines with great care**
+            - And remember: *all of your projects* should have a style guide that goes *beyond* PEP 8.
+            - Your code style conventions should be **explicitly documented**.
           </aside>
         </section>
 
         <section>
-          <h2>Names matter</h2>
+          <h2>Naming things</h2>
           <ul>
-            <li class="fragment">Naming things is hard <span class="fragment">because describing things is hard</span></li>
             <li class="fragment">Important concepts deserve names</li>
+            <li class="fragment">Naming things is hard <span class="fragment">because describing things is hard</span></li>
             <li class="fragment">A name should fully &amp; accurately describe its subject</li>
+            <li class="fragment">Don't be afraid of using long variable names</li>
           </ul>
           <aside class="notes" data-markdown>
-            - If a concept is important, it needs a name
-            - Names give you something to communicate about
-            - People don't usually refer to me as "that guy that does Python training and holds video chats about Python on the Internet,"
-            - People usually call me "Trey".  It's a lot shorter to say.
-            - unfortunately, naming things is hard
-              - naming a thing first requires describing it.  And describing things isn't always easy.
-              - Not only that, once you've described a thing, you need to shorten your description into a name... that's hard too
+            - If a concept is important, it *needs* a name
+            - **🖱** Names give you something to communicate about
+            - **🖱** unfortunately, naming things is hard
+              - naming a thing requires describing it.  And describing things isn't always easy.
+              - **🖱** Not only that, once you've described a thing, you need to shorten your description into a name.  And that's not easy either.
+            - **🖱** if you can't think of a good short name, use a long and descriptive one. That's a lot better than a subpar name. Plus you can always shorten it tomorrow.
+            - **🖱** so worry about accuracy, not name length
+            - *(pause)*
+          </aside>
+        </section>
+
+        <section>
+
+        <section>
+          <h2>Better Names</h2>
+          <ul>
+          <aside class="notes" data-markdown>
+            Let's take a look at some code with poor variable names
           </aside>
         </section>
 
@@ -300,7 +488,8 @@ for i in csv_data:
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - don't use two-letter variable names in Python, use descriptive names
+            - I bet you do *not* know what `sc` stands for in this code
+            - You might know if you had more context, but if you're new to this code you'll search around for a while to discover that it stands for `state_capitals`
           </aside>
         </section>
 
@@ -313,6 +502,15 @@ for i in capitals_csv_data:
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
+            - don't use two-letter variable names in Python, use descriptive names
+            - *(pause)*
+            - speaking of descriptive names, what does the variable `i` represent here?
+            - is it a two-tuple?
+            - is `i[0]` capitals or states?
+            - or is it something else?
+            - *(pause)*
+            - whenever you see an index access this should be a red flag
+            - index access can *usually* be replaced by variables
           </aside>
         </section>
 
@@ -325,7 +523,13 @@ for s, c, *_ in capitals_csv_data:
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - avoid using arbitrary indexes, use tuple unpacking for clarity
+            - we can do this with **tuple unpacking**
+            - you can probably tell now that `s` means state and `c` means capital
+            - so *avoid* using arbitrary indexes
+            - and when possible, use tuple unpacking instead
+            - it's often a lot more explicit and a lot more clear
+            - *(pause)*
+            - now while you did *probably* guess `s` and `c` in this case, there's no reason *not* to use **real words for these variable names**
           </aside>
         </section>
 
@@ -339,6 +543,22 @@ for state, capital, *_ in capitals_csv_data:
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
+            - *(pause)*
+            - **name every variable with care**
+            - optimize for maximum accuracy and completeness...
+            - *not* short variable names
+          </aside>
+        </section>
+
+        </section>
+
+        <section>
+
+        <section>
+          <h2>Name All The Things</h2>
+          <ul>
+          <aside class="notes" data-markdown>
+            Let's look at an example of code that could use some more variables
           </aside>
         </section>
 
@@ -354,9 +574,10 @@ def detect_anagrams(word, candidates):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - this code returns a list of all anagrams
-            - it's not bad code, but it's also not the most descriptive code
+            - this code returns a list of all anagrams of `word` that are in the `candidates` list
+            - it's not *bad* code, but it's also not the most *descriptive* code
             - that `if` statement in particular is pretty loaded
+            - what if we abstracted out that logic into its own function
           </aside>
         </section>
 
@@ -366,14 +587,15 @@ def detect_anagrams(word, candidates):
 def detect_anagrams(word, candidates):
     anagrams = []
     for candidate in candidates:
-        if is_anagram(candidate):
+        if is_anagram(word, candidate):
             anagrams.append(candidate)
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - what if we abstracted out that logic into its own function
-            - it's now more obvious that the condition we were using checks whether two words were anagrams
-            - we've broken down this problem for the reader by abstracting away the exact method we use for checking anagrams because
+            - With that `is_anagram` function, I think it's a lot more obvious now that we're checking *whether two words are in fact anagrams*
+            - we've broken the problem down and described the **process** that we're using
+            - and at the same time, we've away the details of our actual algorithm
+            - let's take a look at that `is_anagram` function
           </aside>
         </section>
 
@@ -386,8 +608,11 @@ def is_anagram(word1, word2):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - now let's look at that new `is_anagram` function
-            - let's start by removing the duplication in uppercasing our words
+            - so this is *pretty much* exactly what our `if` statement had in it before
+            - it could still use some work
+            - `word1.upper()` appears twice and so does and `word2.upper()`.
+            - so we have some code duplication going on
+            - let's fix
           </aside>
         </section>
 
@@ -400,8 +625,42 @@ def is_anagram(word1, word2):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - we're uppercasing our words, sorting them, checking whether they sorted versions are equal and then checking whether the unsorted versions are not equal
+            - that's a lot better
+            - I find the conditional expression on that last line a little easier to read
+            - *(pause)*
+            - I think there's still room for improvement though
+            - so one strategy I use for testing code clarity is to read my code alound in, to test how descriptive it is.
+            - here we're:
+              - sorting our words
+              - checking whether sorted versions are equal
+              - and then checking whether the unsorted versions are not equal
             - that description isn't very helpful
+            - let's write a comment that describes are intent a little better
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+def is_anagram(word1, word2):
+    word1, word2 = word1.upper(), word2.upper()
+    return (
+        sorted(word1) == sorted(word2)  # words have same letters
+        and word1 != word2  # words are not the same
+    )
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - we've added two new comments
+            - if we ignore the code and read the comments we'll see that:
+              - we're verifying that the words have the *same* letters
+              - and whether they're *different* words
+            - *(pause)*
+            - whenever you find yourself adding a comment to your code,
+            - that *might* be a hint that you **need to make another variable name**
+            - remember that comments *describe* things...
+            - and *variables* make that description *into code*
+            - so let's turn those comments into some descriptive variable names
           </aside>
         </section>
 
@@ -416,9 +675,11 @@ def is_anagram(word1, word2):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - we're actually checking whether these words have the same letters but are different words
-            - naming these conditions makes our logic more explicit
-            - this code is more clear because we've documented our the intent of our algorithm and not just the details
+            - so we've turned those two conditional statements into **two new variables** that **describe what they do**
+            - that last line says that we're checking whether these words have the same letters but are different words
+            - that's exactly what our *comments* said before this
+            - those new variables, `are_different_letters` and `have_same_words` made the *logic* of our function a little bit more explicit
+            - this code is **more clear** and **more readable** because we're *conveying the intent* of our algorithm and *not just* the details
           </aside>
         </section>
 
@@ -440,11 +701,27 @@ def is_anagram(word1, word2):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - we've added an extra four lines to our code, but in doing so we've broken our code into more understandable chunks
-            - you may think this example is silly
-            - I mean what we started with wasn't really that complex
-            - but even if we decided to revert some or all of these changes, the exercise was worthwhile
-            - always think about ways you can make your code more self-documenting
+            - so we ended up adding an **four extra lines** to our code
+            - but we broke down *our process* a bit
+            - so that our code a *little more* understandable at a glance
+            - *(pause)*
+            - Now you may think this a silly example
+            - I mean what we started with *wasn't really* that complicated
+            - but even if we do decided to *revert* some of the changes we just made, this *was* a *worthwhile* **mental exercise**
+            - *(pause)*
+            - the *exercise* of **refactoring your code** to be more **self-documenting** can really *reframe* the way that you think about your code
+          </aside>
+        </section>
+
+        </section>
+
+        <section>
+
+        <section>
+          <h2>So Many Functions</h2>
+          <ul>
+          <aside class="notes" data-markdown>
+            Let's take look at a complex Django model method
           </aside>
         </section>
 
@@ -456,9 +733,9 @@ def update_appointment_types(self):
 
     self.appt_types.exclude(specialty=self.specialty).delete()
 
-    new_types = self.specialty.appt_types.exclude(doctor=self)
+    new_types = self.specialty.appt_types.exclude(agent=self)
     self.appt_types.bulk_create(
-        AppointmentType(doctor=self)
+        AppointmentType(agent=self, appointment_type=type_)
         for type_ in new_types
     )
 
@@ -469,9 +746,9 @@ def update_appointment_types(self):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - This function is a method that lives inside a Django model
-            - There's a lot going on in this function
-            - Instead of reading this whole function, I want you to unfocus your eyes and just look at the structure
+            - So this function is a method that lives inside a Django model
+            - There's **a lot** going on in this method
+            - Instead of reading all this code, I want you to unfocus your eyes and just look at the structure
             - Let me help you out.
           </aside>
         </section>
@@ -485,9 +762,9 @@ def update_appointment_types(self):
 
     <span class="blur">self.appt_types.exclude(specialty=self.specialty).delete()</span>
 
-    <span class="blur">new_types = self.specialty.appt_types.exclude(doctor=self)
+    <span class="blur">new_types = self.specialty.appt_types.exclude(agent=self)
     self.appt_types.bulk_create(
-        AppointmentType(doctor=self)
+        AppointmentType(agent=self, appointment_type=type_)
         for type_ in new_types
     )</span>
 
@@ -498,11 +775,11 @@ def update_appointment_types(self):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - There.  Now I can talk without you getting distracted by reading
+            - There.  Now I can talk without you getting distracted by reading all that code
             - The first thing you'll notice is that this code is broken up into three sections
-            - This code was broken into three sections because each section performs a different task
+            - This code was broken into three sections because each of these section performs a different task
 
-            - Let's add comments to these sections
+            - Let's add some comments to these sections
           </aside>
         </section>
 
@@ -516,9 +793,9 @@ def update_appointment_types(self):
     <span class="blur">self.appt_types.exclude(specialty=self.specialty).delete()</span>
 
     # Create new appointment types based on specialty (if needed)
-    <span class="blur">new_types = self.specialty.appt_types.exclude(doctor=self)
+    <span class="blur">new_types = self.specialty.appt_types.exclude(agent=self)
     self.appt_types.bulk_create(
-        AppointmentType(doctor=self)
+        AppointmentType(agent=self, appointment_type=type_)
         for type_ in new_types
     )</span>
 
@@ -530,8 +807,8 @@ def update_appointment_types(self):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - Adding comments improves the readability of this code
-            - We can now understand what each section does without reading it
+            - In my opinion, adding those comments improved the readability of this code
+            - We can understand very quickly what each sections is actually doing
           </aside>
         </section>
 
@@ -545,9 +822,9 @@ def update_appointment_types(self):
     self.appt_types.exclude(specialty=self.specialty).delete()
 
     # Create new appointment types based on specialty (if needed)
-    new_types = self.specialty.appt_types.exclude(doctor=self)
+    new_types = self.specialty.appt_types.exclude(agent=self)
     self.appt_types.bulk_create(
-        AppointmentType(doctor=self)
+        AppointmentType(agent=self, appointment_type=type_)
         for type_ in new_types
     )
 
@@ -559,11 +836,10 @@ def update_appointment_types(self):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - You no longer need to read every character to understand the general gist of this code
-            - Depending on why you're reading this code, you might even be able to get away with only reading the comments
-            - if you find yourself using a comment you might need to:
-              - rename a variable to make it more descriptive
-              - create a variable that didn't exist before: either bundle up some code into a function or make a composite variable
+            - Depending on why you're reading this code, you might even be able to get away with *only reading the comments*
+            - which is great.  We can understand what this code is doing without needing to understand all the details.
+            - *(pause)*
+            - but sometimes comments are a hint that we might have forgot to name some things
           </aside>
         </section>
 
@@ -577,9 +853,9 @@ def update_appointment_types(self):
     <span class="blur">self.appt_types.exclude(specialty=self.specialty).delete()</span>
 
     # Create new appointment types based on specialty (if needed)
-    <span class="blur">new_types = self.specialty.appt_types.exclude(doctor=self)
+    <span class="blur">new_types = self.specialty.appt_types.exclude(agent=self)
     self.appt_types.bulk_create(
-        AppointmentType(doctor=self)
+        AppointmentType(agent=self, appointment_type=type_)
         for type_ in new_types
     )</span>
 
@@ -591,9 +867,10 @@ def update_appointment_types(self):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - I bet you've heard people say you shouldn't need to add comments to your code
-            - Or maybe you've heard someone say your code should be self-documenting
-            - Let's try to make this code more self-documenting by naming each of these sections
+            - we have comments that *describe* these sections of code
+            - but we could also *name* them
+            - *(pause)*
+            - let's turn these comments into variables names by putting each of these code blocks into its own method
           </aside>
         </section>
 
@@ -606,9 +883,9 @@ def _delete_stale_appointment_types(self):
 
 def _create_new_appointment_types(self):
     """Create new appointment types based on specialty if needed"""
-    <span class="blur">new_types = self.specialty.appt_types.exclude(doctor=self)
+    <span class="blur">new_types = self.specialty.appt_types.exclude(agent=self)
     self.appt_types.bulk_create(
-        AppointmentType(doctor=self)
+        AppointmentType(agent=self, appointment_type=type_)
         for type_ in new_types
     )</span>
 
@@ -622,11 +899,10 @@ def _update_default_appointment_type(self):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - We've named each of these three sections of code by making them into functions
+            - So here we've *named* each of these three sections of code by **making them separate functions**
             - These functions are methods that live next our original method.  There helper functions of sorts.
-            - I've left in the comments as documentation strings for clarity
-
-            - now that we've moved these sections of code into functions we need to call them in our original function
+            - We left the comments in as documentation strings for clarity
+            - now that we've made separate methods for these, we need to call them in our original method
           </aside>
         </section>
 
@@ -641,51 +917,142 @@ def update_appointment_types(self):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - I don't know about you, but I find this a lot easier to digest than three undocumented code blocks
-            - these actions now have names and we can refer to them by name
-            - we really don't need to worry about the details when we first read this function, so names should be good enough
+            - now I don't know about you, but I find this a lot easier to digest than three original completely undocumented code blocks
+            - we've *named* the *three* actions we're doing
+            - and most of the time, we probably don't really have to worry about the details of those actions: these names are **good enough**
+          </aside>
+        </section>
+
+        </section>
+
+        <section>
+          <h2>Recap: naming things</h2>
+          <ul>
+            <li>Use whole words for variable names</li>
+            <li>Try to use tuple unpacking instead of index lookups</li>
+            <li>Read your code aloud to test whether it's descriptive</li>
+            <li>Try converting comments to better variable names</li>
+            <li>Create names for unnamed concepts/code</li>
+            <li>In general, try to make your code self-documenting</li>
+          </ul>
+          <aside class="notes" data-markdown>
+            - Let's do a brief recap
+            - Read your code aloud to ensure you're describing the *intent* of your algorithm *in detail*
+            - Remember that comments are great for describing things
+            - But sometimes a comment is just the first step toward a better variable name
+            - Make sure you *give a name* to *everything you can*
+            - and in general, strive for **descriptive** and **self-documenting** code
           </aside>
         </section>
 
         <section>
-          <h2>Mind your constructs</h2>
+          <h2>Programming idioms</h2>
           <ul>
             <li><strong>Special purpose constructs</strong> can reduce complexity</li>
             <li>When possible, use constructs with specific intent</li>
           </ul>
           <aside class="notes" data-markdown>
-            - If you have a specific problem, use a specific solution
-            - I usually prefer programming constructs with specific use cases over constructs with general use cases
+            - Let's talk about some of the code constructs that we use
+            - There's usually multiple ways to write the same code
+            - Because there's often multiple tools that can solve the same problem
+            - When the given the opportunity, I often prefer to use special-purpose tools over general-purpose tools
+            - As long as the tools are easy to understand
+            - *(pause)*
+            - Specific problem call for specific solution
+          </aside>
+        </section>
 
-            - map/filter vs. list comprehension
-            - person writing the code, person reading the code, person writing code that calls your code
-            - namedtuple, Counter, defaultdict
+        <section>
+
+        <section>
+          <h2>Context Managers</h2>
+          <ul>
+          <aside class="notes" data-markdown>
+            Let's take a look at exception handling
+          </aside>
         </section>
 
         <section data-transition="slide-in fade-out">
           <p>
           <pre class="python"><code data-trim>
-def delete_file(my_file):
-    """Delete file or do nothing if file doesn't exist."""
-    try:
-        os.remove(my_file)
-    except FileNotFoundError:
-        pass
+db = DBConnection("mydb")
+try:
+    records = db.query_all()
+finally:
+    db.close()
           </code></pre>
           </p>
+          <aside class="notes" data-markdown>
+            - Here we're opening a database connection, reading data from it, and closing the connection
+            - We need to make sure we close our connection even if an exception occurs so we're using a try-finally block
+            - Whenever you have a section of code that's wrapped in a try-finally or has some kind of cleanup step...
+            - think about whether you should use a **context manager** instead
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+class connect:
+    def __init__(self, path):
+        self.connection = DBConnection(path)
+
+    def __enter__(self):
+        return self.connection
+
+    def __exit__(self):
+        self.close()
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - It's not that hard to *make your own* context managers
+            - All you need is an object with a dunder enter method and a dunder exit method
+            - Oh... and for those who don't know: **dunder** stands for *double underscore* because there's two underscores on each side of these names
+            - Let's take a look at how we can use this context manager
+          </aside>
+        </section>
+
+        <section data-transition="fade-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+with connect("mydb") as db:
+    db.query_all()
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - So this is somewhat simpler than that try-finally statement we were using before
+            - As a reader, we don't have worry whether we're closing our database connection after we open it
+            - That's pretty nice
+            - But we don't *always* have to write our own context managers
+          </aside>
         </section>
 
         <section data-transition="fade-in slide-out">
           <p>
           <pre class="python"><code data-trim>
-from contextlib import suppress
+from contextlib import closing
 
-def delete_file(my_file):
-    """Delete file or do nothing if file doesn't exist."""
-    with suppress(FileNotFoundError):
-        os.remove(my_file)
+with closing(DBConnection("mydb")) as db:
+    db.query_all()
           </code></pre>
           </p>
+          <aside class="notes" data-markdown>
+            - Here's the `closing` context manager from the standard library does pretty much the same thing
+            - So whenever you need a cleanup step: think about using a context manager
+            - You can probably find one that fit your use case, but you can also make your own
+          </aside>
+        </section>
+
+        </section>
+
+        <section>
+
+        <section>
+          <h2>List Comprehensions</h2>
+          <ul>
+          <aside class="notes" data-markdown>
+            Let's talk about for loops
+          </aside>
         </section>
 
         <section data-transition="slide-in fade-out">
@@ -698,9 +1065,11 @@ for <span class="blur">calendar, availabilities</span> in <span class="blur">cal
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            This code loops over something
+            This code **loops** over something
 
             You can tell that even though it's blurred out.
+
+            This code actually does a little more than that though...
           </aside>
         </section>
 
@@ -714,12 +1083,14 @@ for <span class="blur">calendar, availabilities</span> in <span class="blur">cal
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            The express purpose of this code is to
+            Specifically: the purpose of this code is to
             1. loop over something
             2. check a condition
-            3. and create a new list from items that pass the condition
+            3. and create a new list from items that pass that condition
 
             We're using a list append, an if statement, and a for loop to accomplish this task.
+
+            There's a better way to write this code.
           </aside>
         </section>
 
@@ -735,11 +1106,27 @@ employees = [
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - This code is equivalent to what we just saw...
-            - but instead of using a for loop, if statement, and an append call
+            - Here we're accomplishing the exact same task...
+            - but instead of using a for loop, an `if` statement, and an append call
             - we're using a list comprehension
-            - this code isn't shorter, but it does have less unnecessary information
-            - we can tell at a glance that one list is being transformed into another
+            - this code isn't shorter, but it does contain less **unnecessary information** for our brains to process while reading
+            - when we glance at this code we don't think **looping**
+            - instead we think: **one list is being transformed** into another
+            - that's a better description of what the code actually does
+            - *(pause)*
+            - when you have a specific problem, use a specific tool
+          </aside>
+        </section>
+
+        </section>
+
+        <section>
+
+        <section>
+          <h2>Operator Overloading</h2>
+          <ul>
+          <aside class="notes" data-markdown>
+            Let's say we're creating a class to represent items in a shopping cart.
           </aside>
         </section>
 
@@ -771,13 +1158,13 @@ class ShoppingCart:
           <aside class="notes" data-markdown>
             - this shopping cart class is a wrapper around a dictionary
             - notice that this class implements a lot of methods that really just access that dictionary in a fancy way
-            - there's methods to check for containment, add, and remove quantities of products, and ask questions about the status of our cart
-            - these methods should all seem familiar
+            - there's methods to check for containment, add, and remove quantities of products, and ask questions about the status of our cart: what it's product count is and whether or not it's empty
+            - *(pause)*
+            - these methods should all seem *a little* familiar
           </aside>
         </section>
 
         <section>
-          <h3>Case Study: Shopping Cart</h3>
           <table>
             <thead>
               <tr><th>Before</th><th>After</th></tr>
@@ -804,11 +1191,9 @@ class ShoppingCart:
             </tbody>
           </table>
           <aside class="notes" data-markdown>
-            - all of these methods correspond to operations that work automatically on many native Python objects, like dictionaries and lists
+            - *all* of these methods correspond to operations that work automatically on many native Python objects, like dictionaries and lists
             - when we use custom methods and properties, someone trying to use our class will need to learn how it works first
-            - if we use built-in Python operators instead, users won't need to learn as much because they probably already know how lists and dictionaries work
-
-            TODO When you're making reusable code, try to rely on Python's built-in constructs when possible.
+            - if we use built-in Python operators instead, users won't need to learn as much because they *probably* already know how lists and dictionaries work
           </aside>
         </section>
 
@@ -833,10 +1218,12 @@ class ShoppingCart:
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - we can achieve this new API by embracing operator overloading and using dunder methods
+            - in terms of details...
+            - we can make these operators work by using *dunder methods* that do *operator overloading*
             - with this change, our shopping cart container will feel more like a native Python object
             - and new users will find it much easier to learn and to use
             - Don't be afraid to reach for operator overloading when it makes sense
+            - by the way, the standard library has abstract base classes that make a lot of this even easier
           </aside>
         </section>
 
@@ -882,6 +1269,18 @@ class ShoppingCart:
         </section>
         -->
 
+        </section>
+
+        <section>
+
+        <section>
+          <h2>Classes</h2>
+          <ul>
+          <aside class="notes" data-markdown>
+            Let's talk about functions.
+          </aside>
+        </section>
+
         <section data-transition="slide-in none-out">
           <p>
           <pre class="python"><code data-trim data-noescape>
@@ -892,16 +1291,13 @@ def get_connection(host, username, password):
     server.select("inbox")</span>
     return server
 
-
 def close_connection(server):
     <span class="blur">server.close()
     server.logout()</span>
 
-
 def get_message_uids(server):
     """Return unique identifiers for each message"""
     <span class="blur">return server.uid("search", None, "ALL")[1][0].split()</span>
-
 
 def get_message(server, uid):
     """Get email message identified by given UID"""
@@ -926,16 +1322,13 @@ def get_connection(host, username, password):
     server.select("inbox")</span>
     return <strong>server</strong>
 
-
 def close_connection(<strong>server</strong>):
     <span class="blur">server.close()
     server.logout()</span>
 
-
 def get_message_uids(<strong>server</strong>):
     """Return unique identifiers for each message"""
     <span class="blur">return server.uid("search", None, "ALL")[1][0].split()</span>
-
 
 def get_message(<strong>server</strong>, uid):
     """Get email message identified by given UID"""
@@ -950,7 +1343,7 @@ def get_message(<strong>server</strong>, uid):
 
             This should be a hint that something weird is going on.
 
-            If you ever that you're repeatedly passing the same data to multiple functions, think of making a class.
+            If you ever find that you're repeatedly passing the same data to multiple functions, think of making a class.
 
           </aside>
         </section>
@@ -985,62 +1378,71 @@ class IMAPChecker:
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            This is exactly what classes are for.
+            This is exactly what classes were designed for.
 
             Classes bundle functionality and data together.
           </aside>
         </section>
 
+        </section>
+
         <section>
-          <h2>Summary of our code changes</h2>
+          <h2>Recap: programming idioms</h2>
           <ul>
             <li>Think about using a context manager when you notice duplicate code wrapped around other code</li>
-            <li>When converting one list to another, use a list comprehension</li>
+            <li>When making one list from another, use a comprehension</li>
             <li>Don't be afraid to use dunder methods</li>
             <li>Classes are good for bundling up code and data</li>
           </ul>
           <aside class="notes" data-markdown>
-            - When you find yourself wrapping code in redundant try-finally or try-except blocks, think
+            - okay let's do a recpap
+            - When you find yourself wrapping code in redundant try-finally or try-except blocks, think about whether you could use a context manager instead
+            - when making one list from another, use a list comprehension
+            - when your object looks like a container and acts a container, use operator overloading and *make it into* a container
+            - don't be afraid of dunder methods
+            - *(pause)*
             - If you have a specific problem, use a specific solution
-            - I usually prefer programming constructs with specific use cases over constructs with general use cases
-
-            - map/filter vs. list comprehension
-            - person writing the code, person reading the code, person writing code that calls your code
-            - namedtuple, Counter, defaultdict
         </section>
 
         <section>
-          <h2>Cheat sheet</h2>
+          <h2>Readability checklist</h2>
           <ol>
-            <li>Can I modify line breaks or spacing to improve clarity?</li>
-            <li>Can I create a variable name for an unnamed bit of code?</li>
+            <li>Can I modify line breaks to improve clarity?</li>
+            <li>Can I create a variable name for unnamed code?</li>
             <li>Can I add a comment to improve clarity?</li>
             <li>Can I turn a comment into a better variable name?</li>
             <li>Can I use a more specific programming construct?</li>
+            <li>Have I stated detailed preferences in a style guide?</li>
           </ol>
           <aside class="notes" data-markdown>
-            - Is there a way you could space out this code to make it more clear?
-            - Is there an opportunity to use a more descriptive name or an opportunity to give a name to a previously unnamed thing?
-            - Is there a different programming construct you could use that might make your intent more clear?
+            - When you're writing code, stop to pause every once in a while and *actively consider* the readability of your code.
+            - You can use this checklist as a starting point for your own reflections on code readability
+            - As you use this check list on your own code, start to *build up* that **code style guide** we talked about earlier
+            - remember that **every project should have a detailed code style guide**
+            - The more decisions you can offload to the style guide, the more *brain power* you'll have left over to spend on less trivial things
         </section>
 
         <section style="text-align: left;" data-background="#663399" data-background-transition="slide" data-transition="slide">
-          <h1>Final</h1>
-          <p>
-          <small><a href="https://treyhunner.com">Trey Hunner</a> / <a href="https://twitter.com/treyhunner">@treyhunner</a></small>
-          </p>
-          <p>
+          <h3>More talks to watch</h3>
+          <ul>
+            <li><a href="https://www.youtube.com/watch?v=o9pEzgHorH0">Stop Writing Classes</a></li>
+            <li><a href="https://www.youtube.com/watch?v=OSGv2VnC0go">Transforming Code into Beautiful, Idiomatic Python</a></li>
+            <li><a href="https://www.youtube.com/watch?v=r9cnHO15YgU">How to Write Reusable Code</a></li>
+            <li><a href="https://www.youtube.com/watch?v=wf-BqAjZb8M">Beyond PEP 8</a></li>
+            <li><a href="https://www.youtube.com/watch?v=bg1wdbKBRKg">The Other Hard Problem</a></li>
+            <li><a href="https://www.youtube.com/watch?v=55gXwFviOuQ">Jane Austen on PEP8</a></li>
+          </ul>
+          <p style="text-align: right;">
           <small>
-            Technical trainer
+            <a href="https://twitter.com/treyhunner">@treyhunner</a>
             <br>
-            <a href="http://truthful.technology">http://truthful.technology</a>
+            <a href="http://weeklypython.chat">http://WeeklyPython.Chat</a>
           </small>
           </p>
-          <p>
-          <img src="logo.svg" class="no-style logo">
-          </p>
           <aside class="notes" data-markdown>
-            Any questions?
+            - And *finally*:
+            - Here's a list of videos I recommend watching when you get home
+            - Do we have time for questions?
           </aside>
         </section>
 
