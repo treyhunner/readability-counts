@@ -70,8 +70,8 @@
         <section>
           <h2>We're not discussing</h2>
           <ul>
-            <li>Performance</li>
             <li>Writability</li>
+            <li>Performance</li>
             <li>Python-speaking robots</li>
           </ul>
           <aside class="notes" data-markdown>
@@ -101,68 +101,25 @@
         <section>
           <h2>Structuring code</h2>
           <ul>
-            <li class="fragment">Line length is a human limitation, not technical one</li>
             <li class="fragment"><strong>Line length</strong>: number of characters in one line of text</li>
-            <li class="fragment"><strong>Text width</strong>: line length without indentation</li>
-            <li class="fragment">I prefer keeping my text width <strong>under</strong> 60 characters</li>
+            <li class="fragment">Line length is a human limitation, not technical one</li>
             <li class="fragment">Focus on readability when wrapping lines, not line length</li>
           </ul>
           <aside class="notes" data-markdown>
-            - Let's talk about the structure of our code first
+            - **🖱** Let's talk about the structure of our code first
             - **🖱** In the modern age, line length is no longer a technical limitation.  Screens are **really** wide now.
-            - Line length is not about punch cards, it's about readability
             - **Long lines are hard to read**.
-            - **🖱** Line length is a little flawed though because when it comes to readability, indentation isn't quite the same as code
-            - **🖱** So instead of focusing on the line of our lines, I'm going to focus on the width of our text
-            - **🖱** I don't know what a good average text width is, but a 60 characters maximum seems like decent goal
-            - **🖱** Most importantly of all, when inserting line breaks **make sure that you're focusing on readability**.
-            - Short lines are *not* the end goal: readability is
-          </aside>
-        </section>
-
-        <!--
-        <section>
-          <h2>Optimal text width</h2>
-          <ul>
-            <li>The bullet points on these slides automatically wrap text around 50 to 60 characters</li>
-          </ul>
-          <aside class="notes" data-markdown>
-            - Let's talk about the optimal text width.
-            - English prose wrapped at 60 characters usually seems to be a fairly readable
-            - That's about the width of the slides in this presentation
-            - Source code can be a lot more dense than English though
-            - There's also a lot more structure and punctuation in source code than there is in English
-            - so I'm proposing that we attempt to stick to a maximum text width of 60 characters
+            - Line length is a little flawed though
+            - Line length is only approximately co-related with readability
+            - **🖱** When discussing line length, remember that short lines are *not* the end goal: readability is
+            - So when inserting line breaks **make sure that you're focusing on readability, not line length**.
           </aside>
         </section>
 
         <section>
-          <h2>Code structure</h2>
-          <ul>
-            <li><strong>Text length</strong>: number of consecutive non-empty lines</li>
-            <li>Let's assume a maximum indentation of 24 spaces</li>
-            <li>60 text width + 24 indentation = 84 line length</li>
-            <li>90 character line length should be plenty</li>
-          </ul>
-          <aside class="notes" data-markdown>
-            - Unfortunately our linting tools talk about line length and not text width so we need to translate our recommendations into line length
-
-            - 24 spaces is 6 levels of indentation
-            - That's a pretty deep indentation
-            - It's the largest indentation I've found in my own Django apps
-
-            - If we're trying to ensure a maximum text width of 60,
-            - and we're keeping our indentation under 6 levels deep,
-            - then a maximum length of 90 should be plenty
-            - remember that this an absolute maximum... we're trying to write code under this length
-          </aside>
-        </section>
-        -->
 
         <section>
-
-        <section>
-          <h2>Wrapping Lines</h2>
+          <h2>Line Breaks</h2>
           <ul>
           <aside class="notes" data-markdown>
             Let's talk about line breaks
@@ -179,14 +136,14 @@ return min(h for h in employee_hours if h is not None)
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - this code has a text width **under 60 characters**
+            - this code has a line length **under 60 characters**
             - as you read this code, you're probably trying to figure out what it does
             - but you *won't* figure out what it does until you've discovered the structure of the code
             - you'll eventually notice that that 1st statement includes a **generator expression with 2 loops**
             - and that 2nd statement includes a **generation expressions with a single loop and a condition**
             - this code is hard to read because the line breaks are inserted **completely arbitrarily**
             - the author simply wrapped their lines whenever they were approaching a certain line length
-            - the author was valuing the text width or the line length as most important. They completely forgot about readability.
+            - the author was valuing the line length as most important. They completely forgot about readability.
           </aside>
         </section>
 
@@ -344,20 +301,40 @@ default_appointment = models.ForeignKey(
             - You* **do** have* a style guide for **every project you work on**... right?
             - *(pause and lift an eyebrow)*
             - *Consistency* lies at *the heart* of readability.
-            - Make sure you define a style guide with **explicit conventions** in *every single Django project you make*.
+            - Make sure you define a style guide with **explicit conventions** in *every single Python project you make*.
           </aside>
         </section>
 
         </section>
 
-        <!--
+        <section>
+          <h2>PEP 8</h2>
+          <ul>
+            <li class="fragment"><a href="http://pep8.org">PEP 8</a> is <em>the</em> Python style guide</li>
+            <li class="fragment">Read PEP 8 <span class="fragment">every 6 months</span></li>
+            <li class="fragment">PEP 8 is not your project's style guide</li>
+            <li class="fragment">PEP 8 is just a sane starting point</li>
+          </ul>
+          <aside class="notes" data-markdown>
+            - Speaking of style guides, let's talk about PEP 8
+            - **🖱** PEP8 is *the* Python style guide
+            - **🖱** If you aren't familiar with PEP8, read it
+            - If you *think* you're familiar with PEP8, re-read it!
+            - **🖱** In fact, why not make a habit of re-reading PEP8 every 6 months and pondering the relationship between PEP8 and your code?
+            - **🖱** So PEP 8 is the Python style guide, but **not** *your project's* style guide
+            - You need an **opinionated** code style guide.
+            - **🖱** PEP 8 is *not opinionated enough* for your project.  It's a great starting point though
+            - Alright with that out of the way...
+          </aside>
+        </section>
+
         <section>
 
         <section>
-          <h2>Verbose Mode</h2>
+          <h2>Regular Expressions</h2>
           <ul>
           <aside class="notes" data-markdown>
-            TODO
+            Let's talk about regular expressions
           </aside>
         </section>
 
@@ -378,6 +355,9 @@ def is_valid_uuid(uuid):
 
             - is this code readable?
             - this code is difficult to read because regular expressions are information dense
+
+            - So regular expressions are code.  They're like mini programs that are written all on line, without whitespace or comments
+            - you wouldn't write Python code all on line of code without spaces or comments.  Why do you write your regular expression code that way?
           </aside>
         </section>
 
@@ -403,14 +383,14 @@ def is_valid_uuid(uuid):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - If we use verbose mode, we can wrap a regular expression over multiple lines reducing the information density
+            - when using regular expressions: always enable VERBOSE mode!
+            - With verbose mode, we can wrap a regular expression over multiple lines reducing the information density
             - We've broken those 2 lines into 13
-            - We've also extra whitespace and comments, but the line breaks help the most
+            - We've also extra whitespace and comments, but those line breaks are a huge help on their own
           </aside>
         </section>
 
         </section>
-        -->
 
         <!--
         <section>
@@ -433,7 +413,7 @@ def is_valid_uuid(uuid):
         <section>
           <h2>Recap: code structure</h2>
           <ul>
-            <li>Keep your text width narrow (60 characters or less)</li>
+            <li>Keep your text width narrow</li>
             <li>Do not rely on automatic line wrapping</li>
             <li>Insert line breaks with readability in mind</li>
             <li>Document your code styles and stick to them</li>
@@ -900,7 +880,7 @@ def _update_default_appointment_type(self):
           </p>
           <aside class="notes" data-markdown>
             - So here we've *named* each of these three sections of code by **making them separate functions**
-            - These functions are methods that live next our original method.  There helper functions of sorts.
+            - These functions are methods that live next to our original method.  They're helper functions of sorts.
             - We left the comments in as documentation strings for clarity
             - now that we've made separate methods for these, we need to call them in our original method
           </aside>
@@ -965,7 +945,7 @@ def update_appointment_types(self):
         <section>
 
         <section>
-          <h2>Context Managers</h2>
+          <h2>Clean Up</h2>
           <ul>
           <aside class="notes" data-markdown>
             Let's take a look at exception handling
@@ -1048,7 +1028,7 @@ with closing(DBConnection("mydb")) as db:
         <section>
 
         <section>
-          <h2>List Comprehensions</h2>
+          <h2>Lists from lists</h2>
           <ul>
           <aside class="notes" data-markdown>
             Let's talk about for loops
@@ -1227,6 +1207,18 @@ class ShoppingCart:
           </aside>
         </section>
 
+
+        <section>
+          <h2>Abstract Base Classes</h2>
+          <ul>
+            <li><code>collections.UserList</code>: make custom list</li>
+            <li><code>collections.UserDict</code>: make custom dictionary</li>
+            <li><code>collections.UserString</code>: make custom string</li>
+          </ul>
+          <aside class="notes" data-markdown>
+            If you're ever planning to make your own type of container, check out the helpers in the `collections` library first.
+          </aside>
+        </section>
         <!--
         <section>
           <h3>Container dunder methods</h3>
@@ -1274,7 +1266,7 @@ class ShoppingCart:
         <section>
 
         <section>
-          <h2>Classes</h2>
+          <h2>Shared data</h2>
           <ul>
           <aside class="notes" data-markdown>
             Let's talk about functions.
@@ -1339,7 +1331,7 @@ def get_message(<strong>server</strong>, uid):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            Notice that one of these functions returns a server object and the other three functions accept server object.
+            Notice that one of these functions returns a server object and the other three functions each accept a server object.
 
             This should be a hint that something weird is going on.
 
@@ -1442,7 +1434,7 @@ class IMAPChecker:
           <aside class="notes" data-markdown>
             - And *finally*:
             - Here's a list of videos I recommend watching when you get home
-            - Do we have time for questions?
+            - Any questions?
           </aside>
         </section>
 
