@@ -108,6 +108,7 @@
           <aside class="notes" data-markdown>
             - **🖱** Let's talk about the structure of our code first
             - **🖱** In the modern age, line length is no longer a technical limitation.  Screens are **really** wide now.
+            - Line length is about readability
             - **Long lines are hard to read**.
             - Line length is a little flawed though
             - Line length is only approximately co-related with readability
@@ -122,7 +123,7 @@
           <h2>Line Breaks</h2>
           <ul>
           <aside class="notes" data-markdown>
-            Let's talk about line breaks
+            Let's take a look at an example
           </aside>
         </section>
 
@@ -168,7 +169,72 @@ return min(
             - but the line breaks have been moved around to split the code up into logical parts
             - these line breaks **not inserted arbitrarily**
             - *these* line breaks were inserted with the *express goal* of **improving readability**
+          </aside>
+        </section>
 
+        </section>
+
+        <section>
+
+        <section>
+          <h2>Regular Expressions</h2>
+          <ul>
+          <aside class="notes" data-markdown>
+            Let's talk about regular expressions
+          </aside>
+        </section>
+
+        <section data-transition="slide-in fade-out">
+          <p>
+          <pre class="python"><code data-trim>
+def is_valid_uuid(uuid):
+    """Return True if given variable is a valid UUID."""
+    return bool(re.search(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}'
+                          r'-[0-9a-f]{4}-[0-9a-f]{12}$',
+                          uuid, re.IGNORECASE))
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - this function returns True if the string it was given is a valid UUID
+            - A UUID consists of a bunch of hexadecimal digits with dashes in between
+            - this is a function that uses a regular expression to validate the string as a UUID
+
+            - is this code readable?
+            - this code is difficult to read because regular expressions are information dense
+
+            - So regular expressions are code.  They're like mini programs that are written all on line, without whitespace or comments
+            - you wouldn't write Python code all on line of code without spaces or comments.  Why do you write your regular expression code that way?
+          </aside>
+        </section>
+
+        <section data-transition="fade-in slide-out">
+          <p>
+          <pre class="python"><code data-trim>
+def is_valid_uuid(uuid):
+    """Return True if given variable is a valid UUID."""
+    UUID_RE = re.compile(r'''
+        ^
+        [0-9a-f] {8}    # 8 hex digits
+        -
+        [0-9a-f] {4}    # 4 hex digits
+        -
+        [0-9a-f] {4}    # 4 hex digits
+        -
+        [0-9a-f] {4}    # 4 hex digits
+        -
+        [0-9a-f] {12}   # 12 hex digits
+        $
+    ''')
+    return bool(UUID_RE.search(uuid, re.IGNORECASE | re.VERBOSE))
+          </code></pre>
+          </p>
+          <aside class="notes" data-markdown>
+            - when using regular expressions: always enable VERBOSE mode!
+            - With verbose mode, we can wrap a regular expression over multiple lines reducing the information density
+            - We've broken those 2 lines into 13
+            - We've also extra whitespace and comments, but those line breaks are a huge help on their own
+            - when using regular expressions: always turn on VERBOSE mode!
+            - VERBOSE mode allows you to add extra line breaks which improve readability
           </aside>
         </section>
 
@@ -324,72 +390,7 @@ default_appointment = models.ForeignKey(
             - **🖱** So PEP 8 is the Python style guide, but **not** *your project's* style guide
             - You need an **opinionated** code style guide.
             - **🖱** PEP 8 is *not opinionated enough* for your project.  It's a great starting point though
-            - Alright with that out of the way...
           </aside>
-        </section>
-
-        <section>
-
-        <section>
-          <h2>Regular Expressions</h2>
-          <ul>
-          <aside class="notes" data-markdown>
-            Let's talk about regular expressions
-          </aside>
-        </section>
-
-        <section data-transition="slide-in fade-out">
-          <p>
-          <pre class="python"><code data-trim>
-def is_valid_uuid(uuid):
-    """Return True if given variable is a valid UUID."""
-    return bool(re.search(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}'
-                          r'-[0-9a-f]{4}-[0-9a-f]{12}$',
-                          uuid, re.IGNORECASE))
-          </code></pre>
-          </p>
-          <aside class="notes" data-markdown>
-            - this function returns True if the string it was given is a valid UUID
-            - A UUID consists of a bunch of hexadecimal digits with dashes in between
-            - this is a function that uses a regular expression to validate the string as a UUID
-
-            - is this code readable?
-            - this code is difficult to read because regular expressions are information dense
-
-            - So regular expressions are code.  They're like mini programs that are written all on line, without whitespace or comments
-            - you wouldn't write Python code all on line of code without spaces or comments.  Why do you write your regular expression code that way?
-          </aside>
-        </section>
-
-        <section data-transition="fade-in slide-out">
-          <p>
-          <pre class="python"><code data-trim>
-def is_valid_uuid(uuid):
-    """Return True if given variable is a valid UUID."""
-    UUID_RE = re.compile(r'''
-        ^
-        [0-9a-f] {8}    # 8 hex digits
-        -
-        [0-9a-f] {4}    # 4 hex digits
-        -
-        [0-9a-f] {4}    # 4 hex digits
-        -
-        [0-9a-f] {4}    # 4 hex digits
-        -
-        [0-9a-f] {12}   # 12 hex digits
-        $
-    ''')
-    return bool(UUID_RE.search(uuid, re.IGNORECASE | re.VERBOSE))
-          </code></pre>
-          </p>
-          <aside class="notes" data-markdown>
-            - when using regular expressions: always enable VERBOSE mode!
-            - With verbose mode, we can wrap a regular expression over multiple lines reducing the information density
-            - We've broken those 2 lines into 13
-            - We've also extra whitespace and comments, but those line breaks are a huge help on their own
-          </aside>
-        </section>
-
         </section>
 
         <!--
@@ -574,7 +575,7 @@ def detect_anagrams(word, candidates):
           <aside class="notes" data-markdown>
             - With that `is_anagram` function, I think it's a lot more obvious now that we're checking *whether two words are in fact anagrams*
             - we've broken the problem down and described the **process** that we're using
-            - and at the same time, we've away the details of our actual algorithm
+            - and at the same time, we've hidden away the details of our actual algorithm
             - let's take a look at that `is_anagram` function
           </aside>
         </section>
@@ -615,7 +616,7 @@ def is_anagram(word1, word2):
               - checking whether sorted versions are equal
               - and then checking whether the unsorted versions are not equal
             - that description isn't very helpful
-            - let's write a comment that describes are intent a little better
+            - let's write a comment that describes our intent a little better
           </aside>
         </section>
 
@@ -681,9 +682,9 @@ def is_anagram(word1, word2):
           </code></pre>
           </p>
           <aside class="notes" data-markdown>
-            - so we ended up adding an **four extra lines** to our code
+            - so we ended up adding a **four extra lines** to our code
             - but we broke down *our process* a bit
-            - so that our code a *little more* understandable at a glance
+            - so that our code is a *little more* understandable at a glance
             - *(pause)*
             - Now you may think this a silly example
             - I mean what we started with *wasn't really* that complicated
@@ -935,7 +936,7 @@ def update_appointment_types(self):
             - Let's talk about some of the code constructs that we use
             - There's usually multiple ways to write the same code
             - Because there's often multiple tools that can solve the same problem
-            - When the given the opportunity, I often prefer to use special-purpose tools over general-purpose tools
+            - When given the opportunity, I often prefer to use special-purpose tools over general-purpose tools
             - As long as the tools are easy to understand
             - *(pause)*
             - Specific problem call for specific solution
