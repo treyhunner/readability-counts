@@ -28,7 +28,7 @@
         <section data-background="#ffffff" data-background-transition="zoom" data-transition="zoom" data-transition-speed="fast">
           <h1>Readability Counts</h1>
           <p>
-          <small><a href="https://treyhunner.com" rel="author">Trey Hunner</a> / <a href="https://twitter.com/treyhunner">@treyhunner</a></small>
+          <small><a href="https://treyhunner.com" rel="author">Trey Hunner</a> / Python &amp; Django Trainer / <a href="https://twitter.com/treyhunner">@treyhunner</a></small>
           </p>
           <aside class="notes" data-markdown>
             Hey everybody! 😄
@@ -141,7 +141,7 @@ return min(h for h in employee_hours if h is not None)
             - as you read this code, you're probably trying to figure out what it does
             - but you *won't* figure out what it does until you've discovered the structure of the code
             - you'll eventually notice that that 1st statement includes a **generator expression with 2 loops**
-            - and that 2nd statement includes a **generation expressions with a single loop and a condition**
+            - and that 2nd statement includes a **generator expressions with a single loop and a condition**
             - this code is hard to read because the line breaks are inserted **completely arbitrarily**
             - the author simply wrapped their lines whenever they were approaching a certain line length
             - the author was valuing the line length as most important. They completely forgot about readability.
@@ -198,10 +198,8 @@ def is_valid_uuid(uuid):
             - this function returns True if the string it was given is a valid UUID
             - A UUID consists of a bunch of hexadecimal digits with dashes in between
             - this is a function that uses a regular expression to validate the string as a UUID
-
             - is this code readable?
             - this code is difficult to read because regular expressions are information dense
-
             - So regular expressions are code.  They're like mini programs that are written all on line, without whitespace or comments
             - you wouldn't write Python code all on line of code without spaces or comments.  Why do you write your regular expression code that way?
           </aside>
@@ -445,7 +443,7 @@ default_appointment = models.ForeignKey(
               - naming a thing requires describing it.  And describing things isn't always easy.
               - **🖱** Not only that, once you've described a thing, you need to shorten your description into a name.  And that's not easy either.
             - **🖱** if you can't think of a good short name, use a long and descriptive one. That's a lot better than a subpar name. Plus you can always shorten it tomorrow.
-            - **🖱** so worry about accuracy, not name length
+            - **🖱** so when naming things **worry about accuracy**, not name length
             - *(pause)*
           </aside>
         </section>
@@ -1398,6 +1396,12 @@ class IMAPChecker:
         </section>
 
         <section>
+          <h2>My style guide</h2>
+          <a href="http://trey.io/style-guide">http://trey.io/style-guide</a>
+          <aside class="notes" data-markdown>
+        </section>
+
+        <section>
           <h2>Readability checklist</h2>
           <ol>
             <li>Can I modify line breaks to improve clarity?</li>
@@ -1430,6 +1434,8 @@ class IMAPChecker:
             <a href="https://twitter.com/treyhunner">@treyhunner</a>
             <br>
             <a href="http://weeklypython.chat">http://WeeklyPython.Chat</a>
+            <br>
+            Python &amp; Django Trainer for hire
           </small>
           </p>
           <aside class="notes" data-markdown>
